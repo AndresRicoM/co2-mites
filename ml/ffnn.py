@@ -3,98 +3,85 @@
 #CO2 Regular NN
 
 #
+import tensorflow as tf                                                         #Import needed libraries
+from tensorflow import keras                                                    #Machine learning
+import numpy as np                                                              #Array handling
+import matplotlib.pyplot as plt                                                 #Plotting
+import socket                                                                   #UDP Communication
+import time
+import re
+from load_data import *
 
-import tensorflow as tf
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout, LSTM, CuDNNLSTM    #add CuDNNLSTM to run in GPU
-import numpy as np
-import matplotlib.pyplot as plt
-#from tensorflow.contrib.rnn import *
+(x_train, y_train, x_test, y_test) = create_data('S1.csv', .7, 1)
 
-CUDA_VISIBLE_DEVICES = 0
-#Access data.
-data_path = '/home/andres/Jett-Sen/panasonic_intelligence/clustered_data/'
-data_name = 'clustered_Bike_data.txt'
+#Normalization
+x_train = normalize_mat(x_train)
+x_test = normalize_mat(x_test)
 
-#Format input data.
-current_data = np.genfromtxt(data_path + data_name , delimiter = ',',  dtype='str')
-X = current_data[:, 1:-2] #Take away timestamp column (column 0)
-Y = current_data[:, -1] #Assign class column to Y vector.
-X = X.astype(np.float) #Change str to floats.
-Y = Y.astype(np.float)
+y_train = normalize_vect(y_train)
+y_test = normalize_vect(y_test)
 
-index = int(round(current_data.shape[0] * .7))
+model = keras.Sequential([ #Declare a secuential Feed Forward Neural Network With Keras.
 
-x_train = X[0:index,:] #Create X matrix for training.
-x_test = X[(index + 1):X.shape[0],:] #Create X matrix for testing.
-y_train = Y[0:index] #Create Y label vector for training.
-y_test = Y[(index + 1):Y.shape[0]] #Create Y vector for testing.
+    keras.layers.Dense(500,input_dim = 3 , activation = 'relu'), #input layer for the model. Takes input with six variables coming from terMITe. Adjust input_dim to add more sensors.
+    #Hidden layers sequence. Each layer has 200 neurons with activation fucntion relu on every one of them .
+    keras.layers.Dense(500, activation='linear', use_bias=True, kernel_initializer='glorot_uniform', bias_initializer='zeros', kernel_regularizer=None, bias_regularizer=None, activity_regularizer=None, kernel_constraint=None, bias_constraint=None),
+    keras.layers.Dense(500, activation='linear', use_bias=True, kernel_initializer='glorot_uniform', bias_initializer='zeros', kernel_regularizer=None, bias_regularizer=None, activity_regularizer=None, kernel_constraint=None, bias_constraint=None),
+    keras.layers.Dense(500, activation='linear', use_bias=True, kernel_initializer='glorot_uniform', bias_initializer='zeros', kernel_regularizer=None, bias_regularizer=None, activity_regularizer=None, kernel_constraint=None, bias_constraint=None),
+    #Output layer has 5 neurons for each one of the five affective states. Output vector contains probabilities of classification.
+    keras.layers.Dense(1, activation='linear', use_bias=True, kernel_initializer='glorot_uniform', bias_initializer='zeros', kernel_regularizer=None, bias_regularizer=None, activity_regularizer=None, kernel_constraint=None, bias_constraint=None)
 
-#Reshapes X matrix to be able to feed in to LSTM.
-x_train = np.reshape(x_train, (x_train.shape[0], 1, x_train.shape[1]))
-x_test = np.reshape(x_test, (x_test.shape[0], 1, x_test.shape[1]))
-print (x_train.shape)
-print (x_test.shape)
+])
 
-#Reshapes target classes for feeding into network.
-y_train = np.reshape(y_train, (y_train.shape[0], 1))
-y_test = np.reshape(y_test, (y_test.shape[0], 1))
-print (y_train.shape)
-print (y_test.shape)
+model.compile(optimizer='adam', #Uses root mean squared error for optimization.
+              loss='mse', # soarse categorical cross entropy is used as loss function.
+              metrics=['mse', 'mae'])
 
-#Begin sequential model.
-model = Sequential()
-
-#Fisrt layer of model LSTM. input shape expects input of the size of each X instance.
-
-model.add(LSTM(256, input_shape=(1,8), activation='relu', return_sequences=True)) #Uncomment to run on CPU
-#model.add(CuDNNLSTM(256, input_shape = (1,8), return_sequences = True)) #Uncomment to run on GPU
-model.add(Dropout(0.2))
-
-model.add(LSTM(256, activation = 'relu')) #Uncomment to run on CPU
-#model.add(CuDNNLSTM(256)) #Uncomment to run on GPU
-model.add(Dropout(0.2))
-
-#Feeds LSTM results into Dense layers for classification.
-model.add(Dense(500, activation='relu'))
-model.add(Dropout(0.2))
-
-model.add(Dense(500, activation='relu'))
-model.add(Dropout(0.2))
-
-model.add(Dense(500, activation='relu'))
-model.add(Dropout(0.2))
-
-#Last layer of model outputs probability of belonging to a class. Classes are assigned by K-means within unsupervised.py
-model.add(Dense(5, activation='softmax'))
-
-#Declare optimizing fucntion and parameters.
-opt = tf.keras.optimizers.Adam(lr=0.001, decay=1e-6)
-
-#Compile model
-model.compile(
-    loss='sparse_categorical_crossentropy',
-    optimizer=opt,
-    metrics=['accuracy'],
-)
-
-#Fit model and store into history variable.
-history = model.fit(x_train, y_train, epochs=400, validation_data=(x_test, y_test))
-
+history = model.fit(x_train, y_train, validation_split = 0.33, batch_size = 20, epochs=100) #Epochs 60, 1000 Training can be done with different combinations of epochs depending on the data set used.
 print(history.history.keys()) #terminal outout of accuracy results.
 
-test_loss, test_acc = model.evaluate(x_test, y_test) #Evaluate model with test sets (X and Y).
+print(x_test.shape)
+test_loss = model.evaluate(x_test, y_test, batch_size =  20) #Evaluate model with test sets (X and Y).
 
-print('Test accuracy:', test_acc) #Terminal print of final accuracy of model.
+#print('Test accuracy:', test_acc) #Terminal print of final accuracy of model.
 
-#Plot accuracy results of training and test data.
+predictions = model.predict(x_test) #Uses test set to predict.
+
+model.summary()
+model.get_config()
+print ('Number of Training Examples Used: ' , y_train.size) #Helps get number of training examples used.
+print ('Hours of Data;' , (y_train.size * 1.5) / 3600) #Calculates hours of data. Intervals of 1.5 seconds are used to obtain data.
+
 plt.style.use('dark_background')
+
+#plt.style.use('dark_background')
+plt.plot(history.history['loss'])
+plt.plot(history.history['val_loss'])
+plt.title('model loss')
+plt.ylabel('loss')
+plt.xlabel('epoch')
+plt.legend(['train', 'validation'], loc='upper left')
+plt.show()
+
+plt.plot(y_test)
+plt.plot(predictions)
+#plt.plot(history.history['val_loss'])
+plt.title('CO2')
+plt.ylabel('Normalized Co2 ppm')
+plt.xlabel('Time')
+plt.legend(['Real', 'Fitted'], loc='upper left')
+plt.show()
+
+
+#Complete sript for plotting end results for accuracy on test and training set across different epochs.
+"""
 plt.rcParams.update({'font.size': 25})
 plt.figure(1)
 plt.plot(history.history['acc'], '-') #Plot Accuracy Curve
 plt.plot(history.history['val_acc'], ':')
-plt.title('Model Accuracy U6')
+plt.title('Model Accuracy')
 plt.ylabel('Accuracy')
 plt.xlabel('Epoch')
 plt.legend(['Training Set', 'Test Set'], loc='lower right')
 plt.show()
+"""
