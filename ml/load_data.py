@@ -18,14 +18,11 @@ def getnpfromvariable(file_name, variable_name):
         pHolder = next(csv_reader)
         pHolder = pHolder[2]
         pHolder = json.loads(pHolder)
-        new_set[rows] = float(pHolder[variable_name]) #Save value as a float on new NP array.
-
+        try:
+            new_set[rows] = float(pHolder[variable_name]) #Save value as a float on new NP array.
+        except:
+            print('Key exception occured: Not to worry!')
     return new_set
-
-def tt_split(set, train_percentage): #Fubction for spliting data into training and test set
-    test = 2 * set
-    train = 3 * set
-    return test, train
 
 def create_data(file_name, train_percentage, shuffle):
 
@@ -72,6 +69,26 @@ def create_data(file_name, train_percentage, shuffle):
 
     return x_training, y_training, x_test, y_test
 
+def data4clusters(file_name):
+
+    path = os.getcwd() + '/../data/test_data/' + file_name #Relative + absolute path to files.
+    file = open(path, newline='')
+    csv_reader = csv.reader(file)
+    dataRows = int(len(list(file))) #Get length of file.
+    file = open(path, newline='') #Restart file
+    csv_reader = csv.reader(file)
+
+    output_data = np.zeros(dataRows)
+
+    inputValues = ['temperature', 'humidity', 'eCO2']
+
+    for items in inputValues:
+        output_data = np.vstack((output_data, getnpfromvariable(file_name, items)))
+
+    output_data = np.transpose(output_data)
+    output_data = np.delete(output_data, 0, 1)
+
+    return output_data
 
 def normalize_mat(input_mat):
     for i in range(input_mat.shape[1]):
@@ -84,4 +101,4 @@ def normalize_vect(input_vect):
     input_vect = np.true_divide(input_vect, maximum_value)
     return input_vect
 
-#print(create_data('S1.csv', .7, 0))
+#print(data4clusters('SDC30.csv'))

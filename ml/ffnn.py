@@ -37,13 +37,22 @@ model.compile(optimizer='adam', #Uses root mean squared error for optimization.
               loss='mse', # soarse categorical cross entropy is used as loss function.
               metrics=['mse', 'mae'])
 
-history = model.fit(x_train, y_train, validation_split = 0.33, batch_size = 20, epochs=100) #Epochs 60, 1000 Training can be done with different combinations of epochs depending on the data set used.
+history = model.fit(x_train, y_train, validation_split = 0.33, batch_size = 20, epochs=50) #Epochs 60, 1000 Training can be done with different combinations of epochs depending on the data set used.
 print(history.history.keys()) #terminal outout of accuracy results.
 
 print(x_test.shape)
 test_loss = model.evaluate(x_test, y_test, batch_size =  20) #Evaluate model with test sets (X and Y).
 
 #print('Test accuracy:', test_acc) #Terminal print of final accuracy of model.
+(x_train, y_train, x_test, y_test) = create_data('SDC30.csv', .01, 0)
+
+#Normalization
+x_train = normalize_mat(x_train)
+x_test = normalize_mat(x_test)
+
+y_train = normalize_vect(y_train)
+y_test = normalize_vect(y_test)
+
 
 predictions = model.predict(x_test) #Uses test set to predict.
 
@@ -65,23 +74,8 @@ plt.show()
 
 plt.plot(y_test)
 plt.plot(predictions)
-#plt.plot(history.history['val_loss'])
 plt.title('CO2')
 plt.ylabel('Normalized Co2 ppm')
 plt.xlabel('Time')
 plt.legend(['Real', 'Fitted'], loc='upper left')
 plt.show()
-
-
-#Complete sript for plotting end results for accuracy on test and training set across different epochs.
-"""
-plt.rcParams.update({'font.size': 25})
-plt.figure(1)
-plt.plot(history.history['acc'], '-') #Plot Accuracy Curve
-plt.plot(history.history['val_acc'], ':')
-plt.title('Model Accuracy')
-plt.ylabel('Accuracy')
-plt.xlabel('Epoch')
-plt.legend(['Training Set', 'Test Set'], loc='lower right')
-plt.show()
-"""
