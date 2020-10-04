@@ -1,6 +1,5 @@
 import matplotlib
 #matplotlib.use('GTK3Agg') #Uncomment when running program through SSH.
-
 import matplotlib.pyplot as plt
 import seaborn as sns; sns.set()  # for plot styling
 import numpy as np
@@ -63,6 +62,6 @@ def clusteredData(file_name):
 
     plt.show()
 
-    return unclusteredMatrix.shape , y_kmeans.shape
+    return unclusteredMatrix, y_kmeans
 
-print(clusteredData('S1.csv')) #SDC30.csv
+#print(clusteredData('S1.csv')) #SDC30.csv
