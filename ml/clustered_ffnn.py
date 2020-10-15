@@ -13,7 +13,7 @@ import re
 from load_data import *
 from clustering import *
 
-[initial_X, initial_Y] = clusteredData('S1.csv')
+[initial_X, initial_Y] = clusteredData('SDC30.csv')
 
 [initial_X, initial_Y] = shuffle_vect(initial_X, initial_Y)
 

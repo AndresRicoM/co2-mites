@@ -46,7 +46,7 @@ model.add(Dropout(0.2))
 model.add(Dense(500, activation='relu'))
 model.add(Dropout(0.2))
 
-model.add(Dense(4, activation='relu')) #Only One output Unit
+model.add(Dense(4, activation='softmax')) #Only One output Unit
 
 #Declare optimizing fucntion and parameters.
 opt = tf.keras.optimizers.Adam(lr=0.001, decay=1e-6)
@@ -59,7 +59,7 @@ model.compile(
 )
 
 #Fit model and store into history variable.
-history = model.fit(x_train, y_train, epochs=400, validation_data=(x_test, y_test))
+history = model.fit(x_train, y_train, epochs=200,  batch_size = 64, validation_data=(x_test, y_test))
 
 print(history.history.keys()) #terminal outout of accuracy results.
 
@@ -73,7 +73,7 @@ plt.rcParams.update({'font.size': 25})
 plt.figure(1)
 plt.plot(history.history['accuracy'], '-') #Plot Accuracy Curve
 plt.plot(history.history['val_accuracy'], ':')
-plt.title('Model Accuracy U6')
+plt.title('RNN Model Accuracy')
 plt.ylabel('Accuracy')
 plt.xlabel('Epoch')
 plt.legend(['Training Set', 'Test Set'], loc='lower right')
