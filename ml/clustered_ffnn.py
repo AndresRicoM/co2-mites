@@ -20,11 +20,11 @@ from clustering import *
 (x_train, y_train, x_test, y_test) = split_xy(initial_X, initial_Y, .7, 0)
 
 #Normalization
-x_train = normalize_mat(x_train)
-x_test = normalize_mat(x_test)
+#x_train = normalize_mat(x_train)
+#x_test = normalize_mat(x_test)
 
-y_train = normalize_vect(y_train)
-y_test = normalize_vect(y_test)
+#y_train = normalize_vect(y_train)
+#y_test = normalize_vect(y_test)
 
 cluster_num = np.unique(initial_Y).shape[0]
 
@@ -34,10 +34,10 @@ model = keras.Sequential([ #Declare a secuential Feed Forward Neural Network Wit
 
     keras.layers.Dense(500,input_dim = 3 , activation = 'relu'), #input layer for the model. Takes input with six variables coming from terMITe. Adjust input_dim to add more sensors.
     #Hidden layers sequence. Each layer has 200 neurons with activation fucntion relu on every one of them .
-    keras.layers.Dense(500, activation='linear', use_bias=True, kernel_initializer='glorot_uniform', bias_initializer='zeros', kernel_regularizer=None, bias_regularizer=None, activity_regularizer=None, kernel_constraint=None, bias_constraint=None),
-    keras.layers.Dense(500, activation='linear', use_bias=True, kernel_initializer='glorot_uniform', bias_initializer='zeros', kernel_regularizer=None, bias_regularizer=None, activity_regularizer=None, kernel_constraint=None, bias_constraint=None),
-    keras.layers.Dense(500, activation='linear', use_bias=True, kernel_initializer='glorot_uniform', bias_initializer='zeros', kernel_regularizer=None, bias_regularizer=None, activity_regularizer=None, kernel_constraint=None, bias_constraint=None),
-    #Output layer has 5 neurons for each one of the five affective states. Output vector contains probabilities of classification.
+    keras.layers.Dense(500, activation=tf.nn.relu, use_bias=True, kernel_initializer='glorot_uniform', bias_initializer='zeros', kernel_regularizer=None, bias_regularizer=None, activity_regularizer=None, kernel_constraint=None, bias_constraint=None),
+    keras.layers.Dense(500, activation=tf.nn.relu, use_bias=True, kernel_initializer='glorot_uniform', bias_initializer='zeros', kernel_regularizer=None, bias_regularizer=None, activity_regularizer=None, kernel_constraint=None, bias_constraint=None),
+    keras.layers.Dense(500, activation=tf.nn.relu, use_bias=True, kernel_initializer='glorot_uniform', bias_initializer='zeros', kernel_regularizer=None, bias_regularizer=None, activity_regularizer=None, kernel_constraint=None, bias_constraint=None),
+    #Output layer has the same number of neurons as clusters.
     keras.layers.Dense(cluster_num, activation=tf.nn.softmax, use_bias=True, kernel_initializer='glorot_uniform', bias_initializer='zeros', kernel_regularizer=None, bias_regularizer=None, activity_regularizer=None, kernel_constraint=None, bias_constraint=None)
 
 ])
@@ -46,7 +46,7 @@ model.compile(optimizer='rmsprop', #Uses root mean squared error for optimizatio
               loss='sparse_categorical_crossentropy', # soarse categorical cross entropy is used as loss function.
               metrics=['accuracy'])
 
-history = model.fit(x_train, y_train, validation_split = 0.33, batch_size = 20, epochs=50) #Epochs 60, 1000 Training can be done with different combinations of epochs depending on the data set used.
+history = model.fit(x_train, y_train, validation_split = 0.33, batch_size = 1024, epochs=1000) #Epochs 60, 1000 Training can be done with different combinations of epochs depending on the data set used.
 print(history.history.keys()) #terminal outout of accuracy results.
 
 print(x_test.shape)
@@ -68,7 +68,7 @@ plt.rcParams.update({'font.size': 25})
 plt.figure(1)
 plt.plot(history.history['accuracy'], '-') #Plot Accuracy Curve
 plt.plot(history.history['val_accuracy'], ':')
-plt.title('Hi Plot')
+plt.title('FFNN Model Accuracy')
 plt.ylabel('Accuracy')
 plt.xlabel('Epoch')
 plt.legend(['Training Set', 'Test Set'], loc='lower right')
