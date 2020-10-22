@@ -12,56 +12,57 @@ from datetime import datetime
 import pickle
 import os
 from load_data import *
+from load_script import*
 #from matplotlib.backends import _macosx
 
-def clusteredData(file_name):
 
-    unclusteredMatrix = data4clusters(file_name) #Get data from file.
 
+def clusteredData(clusterNum, start, end, sensorID, desiredDimensions):
+    """
+    unclusteredMatrix = data4clusters(file_name, desiredDimensions) #Get data from file.
+    time = np.arange(unclusteredMatrix.shape[0])
+    #unclusteredMatrix = np.concatenate([unclusteredMatrix, time[:, None]], axis = 1)
+    """
+    unclusteredMatrix = queryTermiteServer(start, end, sensorID, desiredDimensions)
+    time = np.arange(unclusteredMatrix.shape[0])
     #Normalized
-    unclusteredMatrix = normalize_mat(unclusteredMatrix)
+    #unclusteredMatrix = normalize_mat(unclusteredMatrix)
 
     plt.style.use('dark_background')
 
     #Run K means with n clusters.
-    kmeans = KMeans(n_clusters=4)
+    kmeans = KMeans(n_clusters=clusterNum)
     kmeans.fit(unclusteredMatrix)
     y_kmeans = kmeans.predict(unclusteredMatrix) #This is the clustered vector.
 
     centers = kmeans.cluster_centers_
 
-    time = np.arange(unclusteredMatrix.shape[0])
-
     #Plot each variable with respect to sequence of bike trip. (Time)
-    gs = gridspec.GridSpec(3,1)
+    gs = gridspec.GridSpec(len(desiredDimensions),1)
     fig = plt.figure()
-    plt.title('K = 4 Clustering', fontsize=30)
-    #plt.ylabel('Normalized Fusion Variables', fontsize=25)
+    plt.title(str(clusterNum) + ' Clusters', fontsize=30)
+    #plt.ylabel('Normalized Fusion desiredDimensions', fontsize=25)
     #plt.xlabel('Time', fontsize=25)
     plt.xticks([])
     plt.yticks([])
     dot_size = 16
 
-    ax = fig.add_subplot(gs[0])
-    ax.scatter(time, unclusteredMatrix[:,0],c=y_kmeans, cmap='plasma', s = dot_size)
-    ax.set_ylabel(r'Temperature', size =15)
-    ax.set_yticklabels([])
-    ax.set_xticklabels([])
+    for numVar in range(0,len(desiredDimensions)):
 
-    ax = fig.add_subplot(gs[1])
-    ax.scatter(time, unclusteredMatrix[:,1],c=y_kmeans, cmap='plasma', s = dot_size )
-    ax.set_ylabel(r'Humidity', size =15)
-    ax.set_yticklabels([])
-    ax.set_xticklabels([])
-
-    ax = fig.add_subplot(gs[2])
-    ax.scatter(time, unclusteredMatrix[:,2],c=y_kmeans, cmap='plasma', s = dot_size)
-    ax.set_ylabel(r'eCO2', size =15)
-    ax.set_yticklabels([])
-    ax.set_xticklabels([])
+        ax = fig.add_subplot(gs[numVar])
+        ax.scatter(time, unclusteredMatrix[:,numVar],c=y_kmeans, cmap='rainbow', s = dot_size)
+        ax.set_ylabel(desiredDimensions[numVar], size =15)
+        ax.set_yticklabels([])
+        ax.set_xticklabels([])
 
     plt.show()
 
     return unclusteredMatrix, y_kmeans
 
-#print(clusteredData('S1.csv')) #SDC30.csv
+#"""
+sensorId = "8360568"
+s = "2020-10-18"
+e = '2020-10-21'
+des = ['temperature', 'humidity', 'ambientLight', 'eco2']
+print(clusteredData(5, s, e, sensorId, des))
+#"""

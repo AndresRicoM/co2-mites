@@ -21,7 +21,7 @@ def getnpfromvariable(file_name, variable_name):
         try:
             new_set[rows] = float(pHolder[variable_name]) #Save value as a float on new NP array.
         except:
-            print('Key exception occured: Not to worry!')
+            print('Key exception occured: Todo Sabroso no pasa nada! - AR')
     return new_set
 
 def create_data(file_name, train_percentage, shuffle):
@@ -33,7 +33,7 @@ def create_data(file_name, train_percentage, shuffle):
     file = open(path, newline='') #Restart file
     csv_reader = csv.reader(file)
 
-    inputValues = ['temperature', 'humidity', 'pressure'] #Desired input variables.
+    inputValues = ['ambientLight', 'humidity', 'pressure'] #Desired input variables.
     outValues = ['eCO2']
 
     main_data = np.zeros(dataRows)
@@ -69,7 +69,7 @@ def create_data(file_name, train_percentage, shuffle):
 
     return x_training, y_training, x_test, y_test
 
-def data4clusters(file_name):
+def data4clusters(file_name, inputValues):
 
     path = os.getcwd() + '/../data/test_data/' + file_name #Relative + absolute path to files.
     file = open(path, newline='')
@@ -79,8 +79,6 @@ def data4clusters(file_name):
     csv_reader = csv.reader(file)
 
     output_data = np.zeros(dataRows)
-
-    inputValues = ['temperature', 'humidity', 'eCO2']
 
     for items in inputValues:
         output_data = np.vstack((output_data, getnpfromvariable(file_name, items)))
@@ -104,23 +102,6 @@ def normalize_vect(input_vect):
 def split_xy(x_data, y_data, train_percentage, shuffle):
 
     dataRows = x_data.shape[0]
-
-    """
-    if shuffle:
-
-        to_shuffle = np.hstack((x_data, y_data))
-        print(to_shuffle.shape)
-        #to_shuffle = np.transpose(to_shuffle)
-
-        for i in range(50): #Shuffle Data 50 times
-            np.random.shuffle(to_shuffle)
-
-        main_data = np.delete(to_shuffle, -1, 1)
-        target_data = to_shuffle[:, -1]
-
-    else:
-        main_data = np.transpose(main_data)
-    """
 
     split = round(dataRows * train_percentage)
 

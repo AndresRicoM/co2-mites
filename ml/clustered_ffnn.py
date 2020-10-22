@@ -13,7 +13,12 @@ import re
 from load_data import *
 from clustering import *
 
-[initial_X, initial_Y] = clusteredData('SDC30.csv')
+sensorId = "8360568"
+s = "2020-10-18"
+e = '2020-10-21'
+des = ['temperature', 'humidity', 'ambientLight', 'eco2']
+
+[initial_X, initial_Y] = clusteredData(5, s, e, sensorId, des)
 
 [initial_X, initial_Y] = shuffle_vect(initial_X, initial_Y)
 
