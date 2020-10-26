@@ -7,7 +7,12 @@ from load_data import *
 from clustering import *
 #from tensorflow.contrib.rnn import *
 
-[initial_X, initial_Y] = clusteredData('SDC30.csv')
+sensorId = "8360568"
+s = "2020-10-18"
+e = '2020-10-21'
+des = ['temperature', 'humidity', 'ambientLight', 'eco2']
+
+[initial_X, initial_Y] = clusteredData(2, s, e, sensorId, des)
 
 #[initial_X, initial_Y] = shuffle_vect(initial_X, initial_Y)
 
@@ -30,7 +35,7 @@ model = Sequential()
 
 #Fisrt layer of model LSTM. input shape expects input of the size of each X instance.
 
-model.add(LSTM(256, input_shape=(1,3), activation='relu', return_sequences=True)) #Uncomment to run on CPU
+model.add(LSTM(256, input_shape=(1,len(des)), activation='relu', return_sequences=True)) #Uncomment to run on CPU
 model.add(Dropout(0.2))
 
 model.add(LSTM(256, activation = 'relu')) #Uncomment to run on CPU
