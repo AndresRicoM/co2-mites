@@ -59,7 +59,7 @@ def clusteredData(clusterNum, start, end, sensorID, desiredDimensions):
 
     return unclusteredMatrix, y_kmeans
 
-#"""
+"""
 sensorId = "8360568"
 s = "2020-10-18"
 e = '2020-10-21'

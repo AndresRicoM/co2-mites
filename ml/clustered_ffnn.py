@@ -18,7 +18,7 @@ s = "2020-10-18"
 e = '2020-10-21'
 des = ['temperature', 'humidity', 'ambientLight', 'eco2']
 
-[initial_X, initial_Y] = clusteredData(5, s, e, sensorId, des)
+[initial_X, initial_Y] = clusteredData(2, s, e, sensorId, des)
 
 [initial_X, initial_Y] = shuffle_vect(initial_X, initial_Y)
 
@@ -37,7 +37,7 @@ print('Number of clusters is: ', cluster_num)
 
 model = keras.Sequential([ #Declare a secuential Feed Forward Neural Network With Keras.
 
-    keras.layers.Dense(500,input_dim = 3 , activation = 'relu'), #input layer for the model. Takes input with six variables coming from terMITe. Adjust input_dim to add more sensors.
+    keras.layers.Dense(500,input_dim = len(des) , activation = 'relu'), #input layer for the model. Takes input with six variables coming from terMITe. Adjust input_dim to add more sensors.
     #Hidden layers sequence. Each layer has 200 neurons with activation fucntion relu on every one of them .
     keras.layers.Dense(500, activation=tf.nn.relu, use_bias=True, kernel_initializer='glorot_uniform', bias_initializer='zeros', kernel_regularizer=None, bias_regularizer=None, activity_regularizer=None, kernel_constraint=None, bias_constraint=None),
     keras.layers.Dense(500, activation=tf.nn.relu, use_bias=True, kernel_initializer='glorot_uniform', bias_initializer='zeros', kernel_regularizer=None, bias_regularizer=None, activity_regularizer=None, kernel_constraint=None, bias_constraint=None),
@@ -51,7 +51,7 @@ model.compile(optimizer='rmsprop', #Uses root mean squared error for optimizatio
               loss='sparse_categorical_crossentropy', # soarse categorical cross entropy is used as loss function.
               metrics=['accuracy'])
 
-history = model.fit(x_train, y_train, validation_split = 0.33, batch_size = 1024, epochs=1000) #Epochs 60, 1000 Training can be done with different combinations of epochs depending on the data set used.
+history = model.fit(x_train, y_train, validation_split = 0.33, batch_size = 1024, epochs=20) #Epochs 60, 1000 Training can be done with different combinations of epochs depending on the data set used.
 print(history.history.keys()) #terminal outout of accuracy results.
 
 print(x_test.shape)
