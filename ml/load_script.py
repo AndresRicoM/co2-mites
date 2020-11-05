@@ -3,7 +3,6 @@ import re
 import json
 import requests
 import numpy as np
-import pandas as pd
 import matplotlib
 import matplotlib.pyplot as plt
 
@@ -11,7 +10,11 @@ def queryTermiteServer(start, end, id, desiredVariables):
 
     url = "http://replace.media.mit.edu:8080/TermitesV2/getsinglesensorbydateid2020.php?sensorid="+id+"&start="+start+"-0-0-0-0&end="+end+"-20-0-0&project=universal"
 
-    arr = requests.get(url).json()
+    try:
+        arr = requests.get(url).json()
+    except:
+        print('Could Not Connect To terMITe Server! =( ')
+
     termiteData = arr[0]
 
     termiteName = termiteData['name']
@@ -38,32 +41,6 @@ def queryTermiteServer(start, end, id, desiredVariables):
 
     return  np.transpose(output_data), termiteTimes #np.any(np.isnan(output_data)), np.all(np.isfinite(output_data))
  #np.transpose(output_data)
-
-def spread_pir(lead_set, flex_set, lead_times, flex_times): #Lead set will be the array with the most columns.
-    #Convert timestaps to datetime
-    lead_times = pd.to_datetime(lead_times)
-    flex_times = pd.to_datetime(flex_times)
-
-    new_set = np.zeros(lead_set.shape[0]) #Create new array with lead set size of rows.
-    time = np.arange(lead_set.shape[0])
-
-    #iterate trhough very value of the flex
-    last_set = 0
-    for ii in range(len(flex_times)):
-        smallest_found = False
-        time_delta = abs(lead_times[last_set] - flex_times[ii])
-        while not smallest_found:
-            if time_delta <= abs(lead_times[last_set] - flex_times[ii]):
-                smallest_found = True
-                new_set[last_set] = flex_set[ii]
-                last_set = last_set + 1
-    new_set = new_set.reshape(new_set.shape[0], 1)
-    plt.style.use('dark_background')
-    plt.plot(time, lead_set[:,1], c= "green")
-    plt.scatter(time, new_set)
-    plt.show()
-
-    return new_set
 
 #############################################################################
 """

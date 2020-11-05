@@ -3,6 +3,8 @@ import math
 import os
 import json
 import csv
+import pandas as pd
+
 
 def getnpfromvariable(file_name, variable_name):
 
@@ -24,7 +26,8 @@ def getnpfromvariable(file_name, variable_name):
             print('Key exception occured: Todo Sabroso no pasa nada! - AR')
     return new_set
 
-def create_data(file_name, train_percentage, shuffle):
+
+def make_data_from_file(file_name, train_percentage, shuffle):
 
     path = os.getcwd() + '/../data/test_data/' + file_name #Relative + absolute path to files.
     file = open(path, newline='')
@@ -129,4 +132,69 @@ def shuffle_vect(input_x, input_y):
 
     return x_shuffle, y_shuffle
 
-#print(data4clusters('SDC30.csv'))
+
+def spread_pir(lead_set, flex_set, lead_times, flex_times): #Lead set will be the array with the most columns.
+    #Convert timestaps to datetime
+    lead_times = pd.to_datetime(lead_times)
+    flex_times = pd.to_datetime(flex_times)
+
+    new_set = np.zeros(lead_set.shape[0]) #Create new array with lead set size of rows.
+    time = np.arange(lead_set.shape[0])
+
+    #iterate trhough very value of the flex
+    last_set = 0
+    for ii in range(len(flex_times)):
+        smallest_found = False
+        time_delta = abs(lead_times[last_set] - flex_times[ii])
+        while not smallest_found:
+            if time_delta <= abs(lead_times[last_set] - flex_times[ii]):
+                smallest_found = True
+                new_set[last_set] = flex_set[ii]
+                last_set = last_set + 1
+    new_set = new_set.reshape(new_set.shape[0], 1)
+    plt.style.use('dark_background')
+    plt.plot(time, lead_set[:,1], c= "green")
+    plt.scatter(time, new_set)
+    plt.show()
+
+    return new_set
+
+def create_data_4regression(start, end, sensorID, desiredDimensions, same_sensor, sensor2ID, desiredDimensions2):
+    if same_sensor: #Modify when we have only one sensor.
+        (unclusteredMatrix, unclustered_times) = queryTermiteServer(start, end, sensorID, desiredDimensions)
+
+    else:
+        (unclusteredMatrix, unclustered_times) = queryTermiteServer(start, end, sensorID, desiredDimensions)
+        (pirMatrix , pirTimes) = queryTermiteServer(start, end, sensor2ID, desiredDimensions2)
+        new_PIR = spread_pir(unclusteredMatrix, pirMatrix, unclustered_times, pirTimes)
+        unclusteredMatrix = np.concatenate((unclusteredMatrix, ), axis=1)
+        #time = np.arange(unclusteredMatrix.shape[0])
+        return unclusteredMatrix, new_PIR
+
+def pir_regression_data(start, end, sensorID, desiredDimensions, same_sensor, sensor2ID, desiredDimensions2, classification):
+
+    if classification:
+        if same_sensor:
+            (unclusteredMatrix, unclustered_times) = queryTermiteServer(start, end, sensorID, desiredDimensions)
+            #time = np.arange(unclusteredMatrix.shape[0])
+            return unclusteredMatrix, unclustered_times
+
+        else:
+            (unclusteredMatrix, unclustered_times) = queryTermiteServer(start, end, sensorID, desiredDimensions)
+            (pirMatrix , pirTimes) = queryTermiteServer(start, end, sensor2ID, desiredDimensions2)
+            new_PIR = spread_pir(unclusteredMatrix, pirMatrix, unclustered_times, pirTimes)
+            unclusteredMatrix = np.concatenate((unclusteredMatrix, ), axis=1)
+            return unclusteredMatrix, unclustered_times
+
+    else:
+        if same_sensor:
+            (unclusteredMatrix, unclustered_times) = queryTermiteServer(start, end, sensorID, desiredDimensions)
+            #time = np.arange(unclusteredMatrix.shape[0])
+
+        else:
+            (unclusteredMatrix, unclustered_times) = queryTermiteServer(start, end, sensorID, desiredDimensions)
+            (pirMatrix , pirTimes) = queryTermiteServer(start, end, sensor2ID, desiredDimensions2)
+            new_PIR = spread_pir(unclusteredMatrix, pirMatrix, unclustered_times, pirTimes)
+            unclusteredMatrix = np.concatenate((unclusteredMatrix, ), axis=1)
+            #time = np.arange(unclusteredMatrix.shape[0])
+            return unclusteredMatrix, new_PIR

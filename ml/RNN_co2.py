@@ -8,11 +8,13 @@ from clustering import *
 #from tensorflow.contrib.rnn import *
 
 sensorId = "8360568"
-s = "2020-10-18"
-e = '2020-10-21'
-des = ['temperature', 'humidity', 'ambientLight', 'eco2']
+sensor2Id = "8362833"
+s = "2020-11-1"
+e = '2020-11-4'
+des = ['eCO2', 'temperature', 'humidity', 'ambientLight']
+des2 = ['pir']
 
-[initial_X, initial_Y] = clusteredData(2, s, e, sensorId, des)
+[initial_X, initial_Y] = clusteredData(2, s, e, sensorId, des, 0, sensor2Id, des2 )
 
 #[initial_X, initial_Y] = shuffle_vect(initial_X, initial_Y)
 

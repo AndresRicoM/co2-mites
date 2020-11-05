@@ -23,21 +23,20 @@ def clusteredData(clusterNum, start, end, sensorID, desiredDimensions, same_sens
     time = np.arange(unclusteredMatrix.shape[0])
     #unclusteredMatrix = np.concatenate([unclusteredMatrix, time[:, None]], axis = 1)
     """
+    #give_me_data(start, end, sensorID, desiredDimensions, same_sensor, sensor2ID, desiredDimensions2,classification):
     if same_sensor:
         (unclusteredMatrix, unclustered_times) = queryTermiteServer(start, end, sensorID, desiredDimensions)
-        time = np.arange(unclusteredMatrix.shape[0])
 
     else:
         (unclusteredMatrix, unclustered_times) = queryTermiteServer(start, end, sensorID, desiredDimensions)
         (pirMatrix , pirTimes) = queryTermiteServer(start, end, sensor2ID, desiredDimensions2)
         new_PIR = spread_pir(unclusteredMatrix, pirMatrix, unclustered_times, pirTimes)
-        print(new_PIR.shape)
-        print(unclusteredMatrix.shape)
-        unclusteredMatrix = np.concatenate((unclusteredMatrix, ), axis=1)
-        time = np.arange(unclusteredMatrix.shape[0])
+        #print(new_PIR.shape)
+        #print(unclusteredMatrix.shape)
+        unclusteredMatrix = np.concatenate((unclusteredMatrix, new_PIR), axis=1)
 
+    time = np.arange(unclusteredMatrix.shape[0])
 
-    #unclusteredMatrix = unclusteredMatrix[:,1:]
     #Normalized
     #unclusteredMatrix = normalize_mat(unclusteredMatrix)
 
