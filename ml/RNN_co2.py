@@ -1,3 +1,19 @@
+# -*- coding: UTF-8 -*-
+#
+
+#    ██████╗ ██████╗ ██████╗       ███╗   ███╗██╗████████╗███████╗███████╗
+#   ██╔════╝██╔═══██╗╚════██╗      ████╗ ████║██║╚══██╔══╝██╔════╝██╔════╝
+#   ██║     ██║   ██║ █████╔╝█████╗██╔████╔██║██║   ██║   █████╗  ███████╗
+#   ██║     ██║   ██║██╔═══╝ ╚════╝██║╚██╔╝██║██║   ██║   ██╔══╝  ╚════██║
+#   ╚██████╗╚██████╔╝███████╗      ██║ ╚═╝ ██║██║   ██║   ███████╗███████║
+#    ╚═════╝ ╚═════╝ ╚══════╝      ╚═╝     ╚═╝╚═╝   ╚═╝   ╚══════╝╚══════╝
+#
+#   ╔═╗┬┌┬┐┬ ┬  ╔═╗┌─┐┬┌─┐┌┐┌┌─┐┌─┐       ╔╦╗╦╔╦╗  ╔╦╗┌─┐┌┬┐┬┌─┐  ╦  ┌─┐┌┐
+#   ║  │ │ └┬┘  ╚═╗│  │├┤ ││││  ├┤   ───  ║║║║ ║   ║║║├┤  │││├─┤  ║  ├─┤├┴┐
+#   ╚═╝┴ ┴  ┴   ╚═╝└─┘┴└─┘┘└┘└─┘└─┘       ╩ ╩╩ ╩   ╩ ╩└─┘─┴┘┴┴ ┴  ╩═╝┴ ┴└─┘
+#
+#
+
 import tensorflow as tf
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, LSTM #, CuDNNLSTM    #add CuDNNLSTM to run in GPU
@@ -14,7 +30,8 @@ e = '2020-11-4'
 des = ['eCO2', 'temperature', 'humidity', 'ambientLight']
 des2 = ['pir']
 
-[initial_X, initial_Y] = clusteredData(2, s, e, sensorId, des, 0, sensor2Id, des2 )
+
+[initial_X, initial_Y] = clusteredData(3, s, e, sensorId, des, 0, sensor2Id, des2 )
 
 #[initial_X, initial_Y] = shuffle_vect(initial_X, initial_Y)
 
@@ -37,7 +54,7 @@ model = Sequential()
 
 #Fisrt layer of model LSTM. input shape expects input of the size of each X instance.
 
-model.add(LSTM(256, input_shape=(1,len(des)), activation='relu', return_sequences=True)) #Uncomment to run on CPU
+model.add(LSTM(256, input_shape=(1,x_train.shape[2]), activation='relu', return_sequences=True)) #Uncomment to run on CPU
 model.add(Dropout(0.2))
 
 model.add(LSTM(256, activation = 'relu')) #Uncomment to run on CPU
