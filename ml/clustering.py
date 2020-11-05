@@ -17,14 +17,27 @@ from load_script import*
 
 
 
-def clusteredData(clusterNum, start, end, sensorID, desiredDimensions):
+def clusteredData(clusterNum, start, end, sensorID, desiredDimensions, same_sensor, sensor2ID, desiredDimensions2):
     """
     unclusteredMatrix = data4clusters(file_name, desiredDimensions) #Get data from file.
     time = np.arange(unclusteredMatrix.shape[0])
     #unclusteredMatrix = np.concatenate([unclusteredMatrix, time[:, None]], axis = 1)
     """
-    unclusteredMatrix = queryTermiteServer(start, end, sensorID, desiredDimensions)
-    time = np.arange(unclusteredMatrix.shape[0])
+    if same_sensor:
+        (unclusteredMatrix, unclustered_times) = queryTermiteServer(start, end, sensorID, desiredDimensions)
+        time = np.arange(unclusteredMatrix.shape[0])
+
+    else:
+        (unclusteredMatrix, unclustered_times) = queryTermiteServer(start, end, sensorID, desiredDimensions)
+        (pirMatrix , pirTimes) = queryTermiteServer(start, end, sensor2ID, desiredDimensions2)
+        new_PIR = spread_pir(unclusteredMatrix, pirMatrix, unclustered_times, pirTimes)
+        print(new_PIR.shape)
+        print(unclusteredMatrix.shape)
+        unclusteredMatrix = np.concatenate((unclusteredMatrix, ), axis=1)
+        time = np.arange(unclusteredMatrix.shape[0])
+
+
+    #unclusteredMatrix = unclusteredMatrix[:,1:]
     #Normalized
     #unclusteredMatrix = normalize_mat(unclusteredMatrix)
 
@@ -59,10 +72,13 @@ def clusteredData(clusterNum, start, end, sensorID, desiredDimensions):
 
     return unclusteredMatrix, y_kmeans
 
+
 """
 sensorId = "8360568"
+sensor2Id = "8362833"
 s = "2020-10-18"
 e = '2020-10-21'
-des = ['temperature', 'humidity', 'ambientLight', 'eco2']
-print(clusteredData(5, s, e, sensorId, des))
+des = ['eCO2', 'temperature', 'humidity', 'ambientLight']
+des2 = ['pir']
+print(clusteredData(2, s, e, sensorId, des, 0, sensor2Id, des2 ))
 #"""

@@ -16,7 +16,7 @@ from clustering import *
 sensorId = "8360568"
 s = "2020-10-18"
 e = '2020-10-21'
-des = ['temperature', 'humidity', 'ambientLight', 'eco2']
+des = ['temperature', 'humidity', 'ambientLight', 'eCO2']
 
 [initial_X, initial_Y] = clusteredData(2, s, e, sensorId, des)
 
