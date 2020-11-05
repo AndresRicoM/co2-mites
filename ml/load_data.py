@@ -168,7 +168,6 @@ def create_data_4regression(start, end, sensorID, desiredDimensions, same_sensor
         (pirMatrix , pirTimes) = queryTermiteServer(start, end, sensor2ID, desiredDimensions2)
         new_PIR = spread_pir(unclusteredMatrix, pirMatrix, unclustered_times, pirTimes)
         unclusteredMatrix = np.concatenate((unclusteredMatrix, ), axis=1)
-        #time = np.arange(unclusteredMatrix.shape[0])
         return unclusteredMatrix, new_PIR
 
 def pir_regression_data(start, end, sensorID, desiredDimensions, same_sensor, sensor2ID, desiredDimensions2, classification):
