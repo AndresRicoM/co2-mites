@@ -6,6 +6,7 @@ import numpy as np
 from sklearn.datasets.samples_generator import make_blobs
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_samples
+from sklearn.cluster import SpectralClustering
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.gridspec as gridspec
 from datetime import datetime
@@ -42,32 +43,69 @@ def clusteredData(clusterNum, start, end, sensorID, desiredDimensions, same_sens
 
     plt.style.use('dark_background')
 
+    """
     #Run K means with n clusters.
     kmeans = KMeans(n_clusters=clusterNum)
-    kmeans.fit(unclusteredMatrix)
+    kmeans.fit(normalize_mat(unclusteredMatrix))
     y_kmeans = kmeans.predict(unclusteredMatrix) #This is the clustered vector.
-
     centers = kmeans.cluster_centers_
+    #"""
 
-    #Plot each variable with respect to sequence of bike trip. (Time)
-    gs = gridspec.GridSpec(len(desiredDimensions),1)
-    fig = plt.figure()
-    plt.title(str(clusterNum) + ' Clusters', fontsize=30)
-    #plt.ylabel('Normalized Fusion desiredDimensions', fontsize=25)
-    #plt.xlabel('Time', fontsize=25)
-    plt.xticks([])
-    plt.yticks([])
-    dot_size = 16
+    clustering = SpectralClustering(n_clusters=clusterNum, assign_labels="discretize",random_state=0).fit(unclusteredMatrix)
+    y_kmeans = clustering.labels_
 
-    for numVar in range(0,len(desiredDimensions)):
+    #"""
+    #Plotting
+    if same_sensor:
+        gs = gridspec.GridSpec(len(desiredDimensions),1)
+        fig = plt.figure()
+        plt.title(str(clusterNum) + ' Clusters', fontsize=30)
+        #plt.ylabel('Normalized Fusion desiredDimensions', fontsize=25)
+        #plt.xlabel('Time', fontsize=25)
+        plt.xticks([])
+        plt.yticks([])
+        dot_size = 16
 
-        ax = fig.add_subplot(gs[numVar])
-        ax.scatter(time, unclusteredMatrix[:,numVar],c=y_kmeans, cmap='rainbow', s = dot_size)
-        ax.set_ylabel(desiredDimensions[numVar], size =15)
-        ax.set_yticklabels([])
-        ax.set_xticklabels([])
+        for numVar in range(0,len(desiredDimensions)):
 
-    plt.show()
+            ax = fig.add_subplot(gs[numVar])
+            ax.scatter(time, unclusteredMatrix[:,numVar],c=y_kmeans, cmap='rainbow', s = dot_size)
+            ax.set_ylabel(desiredDimensions[numVar], size =15)
+            ax.set_yticklabels([])
+            ax.set_xticklabels([])
+
+        plt.show()
+
+    else:
+        gs = gridspec.GridSpec(len(desiredDimensions)+1,1)
+        fig = plt.figure()
+        plt.title(str(clusterNum) + ' Clusters', fontsize=30)
+        #plt.ylabel('Normalized Fusion desiredDimensions', fontsize=25)
+        #plt.xlabel('Time', fontsize=25)
+        plt.xticks([])
+        plt.yticks([])
+        dot_size = 16
+
+        for numVar in range(0,len(desiredDimensions)+1):
+
+            if numVar > len(desiredDimensions)-1:
+                print()
+                ax = fig.add_subplot(gs[numVar])
+                ax.scatter(time, unclusteredMatrix[:,numVar],c=y_kmeans, cmap='rainbow', s = dot_size)
+                ax.set_ylabel(desiredDimensions2[0], size =15)
+                ax.set_yticklabels([])
+                ax.set_xticklabels([])
+
+            else:
+                ax = fig.add_subplot(gs[numVar])
+                ax.scatter(time, unclusteredMatrix[:,numVar],c=y_kmeans, cmap='rainbow', s = dot_size)
+                ax.set_ylabel(desiredDimensions[numVar], size =15)
+                ax.set_yticklabels([])
+                ax.set_xticklabels([])
+
+        plt.show()
+        #"""
+
 
     return unclusteredMatrix, y_kmeans
 

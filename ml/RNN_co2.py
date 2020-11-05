@@ -27,11 +27,12 @@ sensorId = "8360568"
 sensor2Id = "8362833"
 s = "2020-11-1"
 e = '2020-11-4'
-des = ['eCO2', 'temperature', 'humidity', 'ambientLight']
+des = ['eCO2', 'temperature', 'humidity']
 des2 = ['pir']
+cluster_num = 3
 
 
-[initial_X, initial_Y] = clusteredData(3, s, e, sensorId, des, 0, sensor2Id, des2 )
+[initial_X, initial_Y] = clusteredData(cluster_num, s, e, sensorId, des, 0, sensor2Id, des2 )
 
 #[initial_X, initial_Y] = shuffle_vect(initial_X, initial_Y)
 
@@ -70,7 +71,7 @@ model.add(Dropout(0.2))
 model.add(Dense(500, activation='relu'))
 model.add(Dropout(0.2))
 
-model.add(Dense(4, activation='softmax')) #Only One output Unit
+model.add(Dense(cluster_num, activation='softmax')) #Only One output Unit
 
 #Declare optimizing fucntion and parameters.
 opt = tf.keras.optimizers.Adam(lr=0.001, decay=1e-6)

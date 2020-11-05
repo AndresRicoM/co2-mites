@@ -4,6 +4,10 @@ import os
 import json
 import csv
 import pandas as pd
+import matplotlib
+#matplotlib.use('GTK3Agg') #Uncomment when running program through SSH.
+import matplotlib.pyplot as plt
+from load_script import*
 
 
 def getnpfromvariable(file_name, variable_name):
@@ -152,10 +156,13 @@ def spread_pir(lead_set, flex_set, lead_times, flex_times): #Lead set will be th
                 new_set[last_set] = flex_set[ii]
                 last_set = last_set + 1
     new_set = new_set.reshape(new_set.shape[0], 1)
+
+    """
     plt.style.use('dark_background')
     plt.plot(time, lead_set[:,1], c= "green")
     plt.scatter(time, new_set)
     plt.show()
+    #"""
 
     return new_set
 
