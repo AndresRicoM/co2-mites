@@ -7,6 +7,13 @@ from sklearn.datasets.samples_generator import make_blobs
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_samples
 from sklearn.cluster import SpectralClustering
+from sklearn.cluster import DBSCAN
+from sklearn import metrics
+from sklearn.datasets import make_blobs
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import AgglomerativeClustering
+
+
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.gridspec as gridspec
 from datetime import datetime
@@ -18,7 +25,7 @@ from load_script import*
 
 
 
-def clusteredData(clusterNum, start, end, sensorID, desiredDimensions, same_sensor, sensor2ID, desiredDimensions2):
+def clusteredData(clusterNum, start, end, sensorID, desiredDimensions, same_sensor, sensor2ID, desiredDimensions2, chosenAlgorithm):
     """
     unclusteredMatrix = data4clusters(file_name, desiredDimensions) #Get data from file.
     time = np.arange(unclusteredMatrix.shape[0])
@@ -39,22 +46,35 @@ def clusteredData(clusterNum, start, end, sensorID, desiredDimensions, same_sens
     time = np.arange(unclusteredMatrix.shape[0])
 
     #Normalized
-    #unclusteredMatrix = normalize_mat(unclusteredMatrix)
+    unclusteredMatrix = normalize_mat(unclusteredMatrix)
 
     plt.style.use('dark_background')
 
+    if chosenAlgorithm == 'k':
+        print('KMEANS CLUSTERING')
+        clustering = KMeans(n_clusters=clusterNum, random_state=0).fit(unclusteredMatrix)
+        y_kmeans = clustering.labels_
+        #centers = clustering.cluster_centers_
+
+    if chosenAlgorithm == 's':
+        print('SPECTRAL CLUSTERING')
+        clustering = SpectralClustering(n_clusters=clusterNum, assign_labels="discretize",random_state=0).fit(unclusteredMatrix)
+        y_kmeans = clustering.labels_
+        #centers = clustering.cluster_centers_
+
+    if chosenAlgorithm == 'db':
+        print('DBSCAN')
+        clustering = DBSCAN(eps=.01, min_samples=2).fit(unclusteredMatrix)
+        y_kmeans = clustering.labels_
+        #centers = clustering.cluster_centers_
+
+    if chosenAlgorithm == 'a':
+        print('AGGLOMERATIVE CLUSTERING')
+        clustering = AgglomerativeClustering(n_clusters=clusterNum).fit(unclusteredMatrix)
+        y_kmeans = clustering.labels_
+        #centers = clustering.cluster_centers_
+
     """
-    #Run K means with n clusters.
-    kmeans = KMeans(n_clusters=clusterNum)
-    kmeans.fit(normalize_mat(unclusteredMatrix))
-    y_kmeans = kmeans.predict(unclusteredMatrix) #This is the clustered vector.
-    centers = kmeans.cluster_centers_
-    #"""
-
-    clustering = SpectralClustering(n_clusters=clusterNum, assign_labels="discretize",random_state=0).fit(unclusteredMatrix)
-    y_kmeans = clustering.labels_
-
-    #"""
     #Plotting
     if same_sensor:
         gs = gridspec.GridSpec(len(desiredDimensions),1)
@@ -106,16 +126,22 @@ def clusteredData(clusterNum, start, end, sensorID, desiredDimensions, same_sens
         plt.show()
         #"""
 
-
     return unclusteredMatrix, y_kmeans
+
+def get_centroids(incomingMatrix, clusterNum):
+    print('SPECTRAL CLUSTERING')
+    clustering = SpectralClustering(n_clusters=clusterNum, assign_labels="discretize",random_state=0).fit(incomingMatrix)
+    y_kmeans = clustering.labels_
+    centers = clustering.cluster_centers_
+    return centers
 
 
 """
 sensorId = "8360568"
 sensor2Id = "8362833"
-s = "2020-10-18"
-e = '2020-10-21'
-des = ['eCO2', 'temperature', 'humidity', 'ambientLight']
+s = "2020-11-6"
+e = '2020-11-7'
+des = ['eCO2', 'temperature', 'humidity']
 des2 = ['pir']
-print(clusteredData(2, s, e, sensorId, des, 0, sensor2Id, des2 ))
+print(clusteredData(2, s, e, sensorId, des, 0, sensor2Id, des2 , chosenAlgorithm = 's'))
 #"""
