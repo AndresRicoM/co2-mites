@@ -32,6 +32,12 @@ from sklearn.preprocessing import StandardScaler
 from load_script import*
 from load_data import*
 
+#Fix epochs in RNN / Fix daysForModel
+
+cluster_num = 4 #Indicate number of clusters that Spectral will use. Clusters become the categories for classification from the RNN.
+daysForModel = 7 #Days - Variable sets days that have to go by for new model to be generated.
+timeUpadateModel = 7 #Days - Variable sets the amount of days that are taken into account for a new model.
+
 def queryServer():
     sensorId = "8360568"
     e = datetime.datetime.now()
@@ -43,11 +49,11 @@ def queryServer():
     return newSensorData
 
 def getNewModel():
-    cluster_num = 4
+    #cluster_num = 4
     sensorId = "8360568"
     e = datetime.datetime.now()
     endString = e.strftime('%Y'+'-'+'%m'+'-'+'%d'+'-'+'%H'+'-'+'%M'+'-'+'%S')
-    s = e - datetime.timedelta(days=1)
+    s = e - datetime.timedelta(days=daysForModel)
     startString = s.strftime('%Y'+'-'+'%m'+'-'+'%d'+'-'+'%H'+'-'+'%M'+'-'+'%S')
     des = ['eCO2', 'pir']
     return runRNN(sensorId, startString, endString, des, cluster_num)
@@ -81,14 +87,16 @@ if __name__ == "__main__":
 
     """
 
-    cluster_num = 3
-
     current_time = datetime.datetime.now()
+
 
     print(welcome_message);
 
     print('Initializing Training...')
     newModel = getNewModel()
+    f = open('current_model_info/current_accuracy.txt')
+    currentAcc = float(f.readline())
+    f.close()
     print('Established New Centroid Model.')
     haveModel = True
     needUpdate = False
@@ -97,11 +105,15 @@ if __name__ == "__main__":
     while True:
 
         current_time = datetime.datetime.now()
+        #print('Current Model Accuracy is: ', currentAcc)
 
-        if abs(current_time - last_trained) > datetime.timedelta(minutes=50):
+        if (abs(current_time - last_trained) > datetime.timedelta(days=daysForModel)) or currentAcc < .8:
             print('Updating Model...')
             print('Initializing Training...')
             newModel = getNewModel()
+            f = open('current_model_info/current_accuracy.txt')
+            currentAcc = float(f.readline())
+            f.close()
             print('Established New Centroid Model.')
             haveModel = True
             needUpdate = False
@@ -114,8 +126,17 @@ if __name__ == "__main__":
                 receivedData = np.reshape(receivedData[0],(1,2))
                 receivedData = np.reshape(receivedData, (receivedData.shape[0], 1, receivedData.shape[1])) #(receivedData.shape[0], 1, receivedData.shape[1])
                 print('Received Current Room Status')
-                print(newModel.predict(receivedData))
+                print(receivedData)
                 print('Making Desicion...')
-                time.sleep(60*5)
+                predictionVect = newModel.predict(receivedData)
+                print(predictionVect)
+                f = open('current_model_info/prediction_list.txt', 'a')
+                f.write(str(predictionVect) + "\n")
+                f.close()
+                f = open('current_model_info/value_list.txt', 'a')
+                f.write(str(receivedData) + "\n")
+                f.close()
+                print('Waiting for New Data...')
+                time.sleep(30)
             except:
                 print('No New Data')           #print(newModel.predict(receivedData[0]))

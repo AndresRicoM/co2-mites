@@ -87,7 +87,7 @@ def runRNN(sensorId, start, end, desiredValues, numberofclusters):
     )
 
     #Fit model and store into history variable.
-    history = model.fit(x_train, y_train, epochs=200,  batch_size = 64, validation_data=(x_test, y_test))
+    history = model.fit(x_train, y_train, epochs=150,  batch_size = 64, validation_data=(x_test, y_test))
 
     print(history.history.keys()) #terminal outout of accuracy results.
 
@@ -95,7 +95,11 @@ def runRNN(sensorId, start, end, desiredValues, numberofclusters):
 
     print('Test accuracy:', test_acc) #Terminal print of final accuracy of model.
 
-    """#Plot accuracy results of training and test data.
+    f = open('current_model_info/current_accuracy.txt', 'w')
+    f.write(str(test_acc))
+    f.close()
+
+    #"""#Plot accuracy results of training and test data.
     plt.style.use('dark_background')
     plt.rcParams.update({'font.size': 25})
     plt.figure(1)
@@ -105,7 +109,9 @@ def runRNN(sensorId, start, end, desiredValues, numberofclusters):
     plt.ylabel('Accuracy')
     plt.xlabel('Epoch')
     plt.legend(['Training Set', 'Test Set'], loc='lower right')
-    plt.show()
-    """
+    plt.savefig('../viz/Current_Training.png' , dpi = 1000)
+    #plt.show()
+    plt.close()
+    #"""
 
     return model

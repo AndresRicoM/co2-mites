@@ -74,7 +74,7 @@ def clusteredData(clusterNum, start, end, sensorID, desiredDimensions, same_sens
         y_kmeans = clustering.labels_
         #centers = clustering.cluster_centers_
 
-    """
+    #"""
     #Plotting
     if same_sensor:
         gs = gridspec.GridSpec(len(desiredDimensions),1)
@@ -94,7 +94,9 @@ def clusteredData(clusterNum, start, end, sensorID, desiredDimensions, same_sens
             ax.set_yticklabels([])
             ax.set_xticklabels([])
 
-        plt.show()
+        #plt.show()
+        plt.savefig('../viz/Current_Clusters.png' , dpi = 1000)
+        plt.close()
 
     else:
         gs = gridspec.GridSpec(len(desiredDimensions)+1,1)
@@ -111,19 +113,21 @@ def clusteredData(clusterNum, start, end, sensorID, desiredDimensions, same_sens
             if numVar > len(desiredDimensions)-1:
                 print()
                 ax = fig.add_subplot(gs[numVar])
-                ax.scatter(time, unclusteredMatrix[:,numVar],c=y_kmeans, cmap='rainbow', s = dot_size)
+                ax.scatter(time, unclusteredMatrix[:,numVar],c=y_kmeans, cmap='Pastel1', s = dot_size)
                 ax.set_ylabel(desiredDimensions2[0], size =15)
                 ax.set_yticklabels([])
                 ax.set_xticklabels([])
 
             else:
                 ax = fig.add_subplot(gs[numVar])
-                ax.scatter(time, unclusteredMatrix[:,numVar],c=y_kmeans, cmap='rainbow', s = dot_size)
+                ax.scatter(time, unclusteredMatrix[:,numVar],c=y_kmeans, cmap='Pastel1', s = dot_size)
                 ax.set_ylabel(desiredDimensions[numVar], size =15)
                 ax.set_yticklabels([])
                 ax.set_xticklabels([])
 
-        plt.show()
+        #plt.show()
+        plt.savefig('../viz/Current_Clusters.png' , dpi = 1000)
+        plt.close()
         #"""
 
     return unclusteredMatrix, y_kmeans
