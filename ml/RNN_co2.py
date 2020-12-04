@@ -103,8 +103,8 @@ def runRNN(sensorId, start, end, desiredValues, numberofclusters):
     plt.style.use('dark_background')
     plt.rcParams.update({'font.size': 25})
     plt.figure(1)
-    plt.plot(history.history['accuracy'], '-') #Plot Accuracy Curve
-    plt.plot(history.history['val_accuracy'], ':')
+    plt.plot(history.history['acc'], '-') #Plot Accuracy Curve - OS (accuracy) - linus(acc)
+    plt.plot(history.history['val_acc'], ':')
     plt.title('RNN Model Accuracy')
     plt.ylabel('Accuracy')
     plt.xlabel('Epoch')
