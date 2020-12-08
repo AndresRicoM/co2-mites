@@ -99,11 +99,11 @@ def runRNN(sensorId, start, end, desiredValues, numberofclusters):
     f.write(str(test_acc))
     f.close()
 
-    #"""#Plot accuracy results of training and test data.
+    """#Plot accuracy results of training and test data.
     plt.style.use('dark_background')
     plt.rcParams.update({'font.size': 25})
     plt.figure(1)
-    plt.plot(history.history['acc'], '-') #Plot Accuracy Curve - OS (accuracy) - linus(acc)
+    plt.plot(history.history['acc'], '-') #Plot Accuracy Curve - OSX (accuracy) - linux(acc)
     plt.plot(history.history['val_acc'], ':')
     plt.title('RNN Model Accuracy')
     plt.ylabel('Accuracy')
