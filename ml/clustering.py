@@ -130,7 +130,7 @@ def clusteredData(clusterNum, start, end, sensorID, desiredDimensions, same_sens
         plt.close()
         #
         file_name = str(datetime.datetime.now()) + '.txt'
-        np.savetxt('trained_models/cluster_models/' + file_name,np.hstack( (unclusteredMatrix, np.transpose(y_kmeans))))
+        np.savetxt('trained_models/cluster_models/' + file_name,np.hstack( (unclusteredMatrix, np.reshape(y_kmeans, (y_kmeans.shape[0], 1)))))
 
     return unclusteredMatrix, y_kmeans
 
@@ -141,7 +141,7 @@ def get_centroids(incomingMatrix, clusterNum):
     centers = clustering.cluster_centers_
     return centers
 
-
+"""
 sensorId = "8360568"
 sensor2Id = "8362833"
 s = "2020-11-6"
@@ -149,3 +149,4 @@ e = '2020-11-7'
 des = ['eCO2', 'temperature', 'humidity']
 des2 = ['pir']
 print(clusteredData(2, s, e, sensorId, des, 0, sensor2Id, des2 , chosenAlgorithm = 's'))
+"""
