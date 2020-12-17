@@ -129,8 +129,9 @@ def clusteredData(clusterNum, start, end, sensorID, desiredDimensions, same_sens
         plt.savefig('../viz/Current_Clusters.png' , dpi = 1000)
         plt.close()
         #
-        file_name = str(datetime.datetime.now()) + '.txt'
-        np.savetxt('trained_models/cluster_models/' + file_name,np.hstack( (unclusteredMatrix, np.reshape(y_kmeans, (y_kmeans.shape[0], 1)))))
+        #file_name = str(datetime.datetime.now()) + '.txt'
+        #np.savetxt('trained_models/cluster_models/' + file_name,np.hstack( (unclusteredMatrix, np.reshape(y_kmeans, (y_kmeans.shape[0], 1)))))
+        print('New Clustered Data has been saved!')
 
     return unclusteredMatrix, y_kmeans
 
