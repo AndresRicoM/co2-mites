@@ -74,7 +74,7 @@ def clusteredData(clusterNum, start, end, sensorID, desiredDimensions, same_sens
         y_kmeans = clustering.labels_
         #centers = clustering.cluster_centers_
 
-    #"""
+    #
     #Plotting
     if same_sensor:
         gs = gridspec.GridSpec(len(desiredDimensions),1)
@@ -95,7 +95,7 @@ def clusteredData(clusterNum, start, end, sensorID, desiredDimensions, same_sens
             ax.set_xticklabels([])
 
         #plt.show()
-        plt.savefig('../viz/Current_Clusters.png' , dpi = 1000)
+        plt.savefig('home/pi/co2-mites/viz/Current_Clusters.png' , dpi = 1000)
         plt.close()
 
     else:
@@ -126,9 +126,9 @@ def clusteredData(clusterNum, start, end, sensorID, desiredDimensions, same_sens
                 ax.set_xticklabels([])
 
         #plt.show()
-        plt.savefig('../viz/Current_Clusters.png' , dpi = 1000)
+        plt.savefig('home/pi/co2-mites/viz/Current_Clusters.png' , dpi = 1000)
         plt.close()
-        #"""
+        #
 
     return unclusteredMatrix, y_kmeans
 
