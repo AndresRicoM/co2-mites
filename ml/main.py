@@ -94,13 +94,13 @@ if __name__ == "__main__":
 
     print('Initializing Training...')
     newModel = getNewModel()
+    current_file_name = str(datetime.datetime.now())
     f = open('current_model_info/current_accuracy.txt')
     currentAcc = float(f.readline())
     f.close()
     f = open('trained_models/accuracy/' + current_file_name + '_accuracy.txt', 'a')
     f.write(str(currentAcc) + "\n")
     f.close()
-    current_file_name = str(datetime.datetime.now())
     print('Established New Centroid Model.')
     haveModel = True
     needUpdate = False
