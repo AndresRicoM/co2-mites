@@ -16,7 +16,7 @@ from sklearn.cluster import AgglomerativeClustering
 
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.gridspec as gridspec
-from datetime import datetime
+import datetime
 import pickle
 import os
 from load_data import *
@@ -95,7 +95,7 @@ def clusteredData(clusterNum, start, end, sensorID, desiredDimensions, same_sens
             ax.set_xticklabels([])
 
         #plt.show()
-        plt.savefig('home/pi/co2-mites/viz/Current_Clusters.png' , dpi = 1000)
+        plt.savefig('../viz/Current_Clusters.png' , dpi = 1000)
         plt.close()
 
     else:
@@ -126,9 +126,11 @@ def clusteredData(clusterNum, start, end, sensorID, desiredDimensions, same_sens
                 ax.set_xticklabels([])
 
         #plt.show()
-        plt.savefig('home/pi/co2-mites/viz/Current_Clusters.png' , dpi = 1000)
+        plt.savefig('../viz/Current_Clusters.png' , dpi = 1000)
         plt.close()
         #
+        file_name = str(datetime.datetime.now()) + '.txt'
+        np.savetxt('trained_models/cluster_models/' + file_name,np.hstack( (unclusteredMatrix, np.transpose(y_kmeans))))
 
     return unclusteredMatrix, y_kmeans
 
@@ -140,7 +142,6 @@ def get_centroids(incomingMatrix, clusterNum):
     return centers
 
 
-"""
 sensorId = "8360568"
 sensor2Id = "8362833"
 s = "2020-11-6"
@@ -148,4 +149,3 @@ e = '2020-11-7'
 des = ['eCO2', 'temperature', 'humidity']
 des2 = ['pir']
 print(clusteredData(2, s, e, sensorId, des, 0, sensor2Id, des2 , chosenAlgorithm = 's'))
-#"""
