@@ -94,7 +94,7 @@ if __name__ == "__main__":
 
     print('Initializing Training...')
     newModel = getNewModel()
-    f = open('home/pi/co2-mites/ml/current_model_info/current_accuracy.txt')
+    f = open('current_model_info/current_accuracy.txt')
     currentAcc = float(f.readline())
     f.close()
     print('Established New Centroid Model.')
@@ -111,9 +111,10 @@ if __name__ == "__main__":
             print('Updating Model...')
             print('Initializing Training...')
             newModel = getNewModel()
-            f = open('home/pi/co2-mites/ml/current_model_info/current_accuracy.txt')
+            f = open('current_model_info/current_accuracy.txt')
             currentAcc = float(f.readline())
             f.close()
+            current_file_name = str(datetime.datetime.now()) + '.txt'
             print('Established New Centroid Model.')
             haveModel = True
             needUpdate = False
@@ -130,10 +131,10 @@ if __name__ == "__main__":
                 print('Making Desicion...')
                 predictionVect = newModel.predict(receivedData)
                 print(predictionVect)
-                f = open('home/pi/co2-mites/ml/current_model_info/prediction_list.txt', 'a')
+                f = open('current_model_info/prediction_list.txt', 'a')
                 f.write(str(predictionVect) + "\n")
                 f.close()
-                f = open('home/pi/co2-mites/ml/current_model_info/value_list.txt', 'a')
+                f = open('current_model_info/value_list.txt', 'a')
                 f.write(str(receivedData) + "\n")
                 f.close()
                 print('Waiting for New Data...')

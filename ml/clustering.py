@@ -142,7 +142,7 @@ def get_centroids(incomingMatrix, clusterNum):
     centers = clustering.cluster_centers_
     return centers
 
-#"""
+"""
 sensorId = "8360568"
 sensor2Id = "8362833"
 s = "2020-11-6"
