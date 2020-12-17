@@ -60,6 +60,9 @@ def clusteredData(clusterNum, start, end, sensorID, desiredDimensions, same_sens
         print('SPECTRAL CLUSTERING')
         clustering = SpectralClustering(n_clusters=clusterNum, assign_labels="discretize",random_state=0).fit(unclusteredMatrix)
         y_kmeans = clustering.labels_
+        file_name = str(datetime.datetime.now()) + '.txt'
+        np.savetxt('trained_models/cluster_models/' + file_name,np.hstack( (unclusteredMatrix, np.reshape(y_kmeans, (y_kmeans.shape[0], 1)))))
+        print('New Clustered Data has been saved!')
         #centers = clustering.cluster_centers_
 
     if chosenAlgorithm == 'db':
@@ -129,9 +132,6 @@ def clusteredData(clusterNum, start, end, sensorID, desiredDimensions, same_sens
         plt.savefig('../viz/Current_Clusters.png' , dpi = 1000)
         plt.close()
         #
-        #file_name = str(datetime.datetime.now()) + '.txt'
-        #np.savetxt('trained_models/cluster_models/' + file_name,np.hstack( (unclusteredMatrix, np.reshape(y_kmeans, (y_kmeans.shape[0], 1)))))
-        print('New Clustered Data has been saved!')
 
     return unclusteredMatrix, y_kmeans
 
@@ -142,7 +142,7 @@ def get_centroids(incomingMatrix, clusterNum):
     centers = clustering.cluster_centers_
     return centers
 
-"""
+#"""
 sensorId = "8360568"
 sensor2Id = "8362833"
 s = "2020-11-6"
@@ -150,4 +150,4 @@ e = '2020-11-7'
 des = ['eCO2', 'temperature', 'humidity']
 des2 = ['pir']
 print(clusteredData(2, s, e, sensorId, des, 0, sensor2Id, des2 , chosenAlgorithm = 's'))
-"""
+#"""
