@@ -95,7 +95,7 @@ def runRNN(sensorId, start, end, desiredValues, numberofclusters):
 
     print('Test accuracy:', test_acc) #Terminal print of final accuracy of model.
 
-    f = open('home/pi/co2-mites/ml/current_model_info/current_accuracy.txt', 'w')
+    f = open('current_model_info/current_accuracy.txt', 'w')
     f.write(str(test_acc))
     f.close()
 
@@ -109,7 +109,7 @@ def runRNN(sensorId, start, end, desiredValues, numberofclusters):
     plt.ylabel('Accuracy')
     plt.xlabel('Epoch')
     plt.legend(['Training Set', 'Test Set'], loc='lower right')
-    plt.savefig('home/pi/co2-mites/viz/Current_Training.png' , dpi = 1000)
+    plt.savefig('Current_Training.png' , dpi = 1000)
     #plt.show()
     plt.close()
     #"""

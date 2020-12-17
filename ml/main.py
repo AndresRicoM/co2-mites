@@ -97,6 +97,10 @@ if __name__ == "__main__":
     f = open('current_model_info/current_accuracy.txt')
     currentAcc = float(f.readline())
     f.close()
+    f = open('trained_models/accuracy/' + current_file_name + '_accuracy.txt', 'a')
+    f.write(str(currentAcc) + "\n")
+    f.close()
+    current_file_name = str(datetime.datetime.now())
     print('Established New Centroid Model.')
     haveModel = True
     needUpdate = False
@@ -114,7 +118,10 @@ if __name__ == "__main__":
             f = open('current_model_info/current_accuracy.txt')
             currentAcc = float(f.readline())
             f.close()
-            current_file_name = str(datetime.datetime.now()) + '.txt'
+            f = open('trained_models/accuracy/' + current_file_name + '_accuracy.txt', 'a')
+            f.write(str(currentAcc) + "\n")
+            f.close()
+            current_file_name = str(datetime.datetime.now())
             print('Established New Centroid Model.')
             haveModel = True
             needUpdate = False
@@ -131,12 +138,13 @@ if __name__ == "__main__":
                 print('Making Desicion...')
                 predictionVect = newModel.predict(receivedData)
                 print(predictionVect)
-                f = open('current_model_info/prediction_list.txt', 'a')
+                f = open('trained_models/predictions/' + current_file_name + '_predictions.txt', 'a')
                 f.write(str(predictionVect) + "\n")
                 f.close()
-                f = open('current_model_info/value_list.txt', 'a')
+                f = open('trained_models/values/' + current_file_name + '_received.txt', 'a')
                 f.write(str(receivedData) + "\n")
                 f.close()
+
                 print('Waiting for New Data...')
                 time.sleep(60*15) #Wait for 15 minutes for New Prediction
             except:
