@@ -87,7 +87,7 @@ def runRNN(sensorId, start, end, desiredValues, numberofclusters):
     )
 
     #Fit model and store into history variable.
-    history = model.fit(x_train, y_train, epochs=2,  batch_size = 64, validation_data=(x_test, y_test))
+    history = model.fit(x_train, y_train, epochs=50,  batch_size = 64, validation_data=(x_test, y_test))
 
     print(history.history.keys()) #terminal outout of accuracy results.
 
