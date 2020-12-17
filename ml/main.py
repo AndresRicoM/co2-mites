@@ -89,16 +89,16 @@ if __name__ == "__main__":
 
     current_time = datetime.datetime.now()
 
-
+    print(os.path.abspath(os.curdir))
     print(welcome_message);
 
     print('Initializing Training...')
     newModel = getNewModel()
     current_file_name = str(datetime.datetime.now())
-    f = open('/current_model_info/current_accuracy.txt')
+    f = open('current_model_info/current_accuracy.txt')
     currentAcc = float(f.readline())
     f.close()
-    f = open('/trained_models/accuracy/' + current_file_name + '_accuracy.txt', 'a')
+    f = open('trained_models/accuracy/' + current_file_name + '_accuracy.txt', 'a')
     f.write(str(currentAcc) + "\n")
     f.close()
     print('Established New Centroid Model.')
@@ -115,10 +115,10 @@ if __name__ == "__main__":
             print('Updating Model...')
             print('Initializing Training...')
             newModel = getNewModel()
-            f = open('/current_model_info/current_accuracy.txt')
+            f = open('current_model_info/current_accuracy.txt')
             currentAcc = float(f.readline())
             f.close()
-            f = open('/trained_models/accuracy/' + current_file_name + '_accuracy.txt', 'a')
+            f = open('trained_models/accuracy/' + current_file_name + '_accuracy.txt', 'a')
             f.write(str(currentAcc) + "\n")
             f.close()
             current_file_name = str(datetime.datetime.now())
@@ -138,10 +138,10 @@ if __name__ == "__main__":
                 print('Making Desicion...')
                 predictionVect = newModel.predict(receivedData)
                 print(predictionVect)
-                f = open('/trained_models/predictions/' + current_file_name + '_predictions.txt', 'a')
+                f = open('trained_models/predictions/' + current_file_name + '_predictions.txt', 'a')
                 f.write(str(predictionVect) + "\n")
                 f.close()
-                f = open('/trained_models/values/' + current_file_name + '_received.txt', 'a')
+                f = open('trained_models/values/' + current_file_name + '_received.txt', 'a')
                 f.write(str(receivedData) + "\n")
                 f.close()
 
