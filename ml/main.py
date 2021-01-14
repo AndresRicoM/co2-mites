@@ -132,6 +132,9 @@ if __name__ == "__main__":
             receivedData = queryServer()
             try:
                 receivedData = np.reshape(receivedData[0],(1,2))
+                print('UnNormalized Received Data: ', receivedData )
+                receivedData = normalize_mat(receivedData)
+                print('Normalized Received Data: ', receivedData )
                 receivedData = np.reshape(receivedData, (receivedData.shape[0], 1, receivedData.shape[1])) #(receivedData.shape[0], 1, receivedData.shape[1])
                 print('Received Current Room Status')
                 print(receivedData)
