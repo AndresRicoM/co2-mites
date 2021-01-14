@@ -1,3 +1,4 @@
+
 # -*- coding: UTF-8 -*-
 #
 #    ██████╗ ██████╗ ██████╗       ███╗   ███╗██╗████████╗███████╗███████╗
@@ -33,7 +34,7 @@ from load_script import*
 from load_data import*
 
 #Fix epochs in RNN / Fix daysForModel
-
+minimumAcceptedAccuracy = .6
 cluster_num = 4 #Indicate number of clusters that Spectral will use. Clusters become the categories for classification from the RNN.
 daysForModel = 7 #Days - Variable sets days that have to go by for new model to be generated.
 timeUpadateModel = 7 #Days - Variable sets the amount of days that are taken into account for a new model.
@@ -58,6 +59,14 @@ def getNewModel():
     des = ['eCO2', 'pir']
     return runRNN(sensorId, startString, endString, des, cluster_num)
 
+def getMax():
+    sensorId = "8360568"
+    e = datetime.datetime.now()
+    endString = e.strftime('%Y'+'-'+'%m'+'-'+'%d'+'-'+'%H'+'-'+'%M'+'-'+'%S')
+    s = e - datetime.timedelta(days=daysForModel)
+    startString = s.strftime('%Y'+'-'+'%m'+'-'+'%d'+'-'+'%H'+'-'+'%M'+'-'+'%S')
+    des = ['eCO2', 'pir']
+    newSensorData, newSensorTimes  = queryTermiteServer(startString, endString, sensorId, des)
 
 if __name__ == "__main__":
 
@@ -111,7 +120,7 @@ if __name__ == "__main__":
         current_time = datetime.datetime.now()
         #print('Current Model Accuracy is: ', currentAcc)
 
-        if (abs(current_time - last_trained) > datetime.timedelta(days=daysForModel)) or currentAcc < .8:
+        if (abs(current_time - last_trained) > datetime.timedelta(days=daysForModel)) or currentAcc < minimumAcceptedAccuracy:
             print('Updating Model...')
             print('Initializing Training...')
             newModel = getNewModel()
@@ -149,6 +158,6 @@ if __name__ == "__main__":
                 f.close()
 
                 print('Waiting for New Data...')
-                time.sleep(60*15) #Wait for 15 minutes for New Prediction
+                #time.sleep(60*15) #Wait for 15 minutes for New Prediction
             except:
                 print('No New Data')           #print(newModel.predict(receivedData[0]))
