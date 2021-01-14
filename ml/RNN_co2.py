@@ -15,8 +15,8 @@
 #
 
 import tensorflow as tf
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout, LSTM #, CuDNNLSTM    #add CuDNNLSTM to run in GPU
+from keras.models import Sequential
+from keras.layers import Dense, Dropout, LSTM #, CuDNNLSTM    #add CuDNNLSTM to run in GPU
 import numpy as np
 import matplotlib.pyplot as plt
 from load_data import *
