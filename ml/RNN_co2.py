@@ -15,8 +15,8 @@
 #
 
 import tensorflow as tf
-from keras.models import Sequential
-from keras.layers import Dense, Dropout, LSTM #, CuDNNLSTM    #add CuDNNLSTM to run in GPU
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Dropout, LSTM #, CuDNNLSTM    #add CuDNNLSTM to run in GPU
 import numpy as np
 import matplotlib.pyplot as plt
 from load_data import *
@@ -65,8 +65,8 @@ def runRNN(sensorId, start, end, desiredValues, numberofclusters):
     model.add(Dropout(0.2))
 
     #Feeds LSTM results into Dense layers for classification.
-    model.add(Dense(500, activation='relu'))
-    model.add(Dropout(0.2))
+    #model.add(Dense(500, activation='relu'))
+    #model.add(Dropout(0.2))
 
     model.add(Dense(500, activation='relu'))
     model.add(Dropout(0.2))
