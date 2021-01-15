@@ -34,10 +34,10 @@ from load_script import*
 from load_data import*
 
 #Fix epochs in RNN / Fix daysForModel
-minimumAcceptedAccuracy = .6
+minimumAcceptedAccuracy = .2
 cluster_num = 4 #Indicate number of clusters that Spectral will use. Clusters become the categories for classification from the RNN.
 daysForModel = 7 #Days - Variable sets days that have to go by for new model to be generated.
-timeUpadateModel = 7 #Days - Variable sets the amount of days that are taken into account for a new model.
+timeUpadateModel = 3 #Days - Variable sets the amount of days that are taken into account for a new model.
 
 def queryServer():
     sensorId = "8360568"
@@ -67,6 +67,10 @@ def getMax():
     startString = s.strftime('%Y'+'-'+'%m'+'-'+'%d'+'-'+'%H'+'-'+'%M'+'-'+'%S')
     des = ['eCO2', 'pir']
     newSensorData, newSensorTimes  = queryTermiteServer(startString, endString, sensorId, des)
+    max_pir = np.max(newSensorData[:,1])
+    max_co2 = np.max(newSensorData[:,0])
+    return max_co2, max_pir
+
 
 if __name__ == "__main__":
 
@@ -97,10 +101,8 @@ if __name__ == "__main__":
     """
 
     current_time = datetime.datetime.now()
-
     print(os.path.abspath(os.curdir))
     print(welcome_message);
-
     print('Initializing Training...')
     newModel = getNewModel()
     current_file_name = str(datetime.datetime.now())
@@ -114,6 +116,9 @@ if __name__ == "__main__":
     haveModel = True
     needUpdate = False
     last_trained = datetime.datetime.now()
+    currentMaxCo2 , currentMaxPir = getMax()
+    print(currentMaxCo2)
+    print(currentMaxPir)
 
     while True:
 
@@ -135,15 +140,18 @@ if __name__ == "__main__":
             haveModel = True
             needUpdate = False
             last_trained = datetime.datetime.now()
+            currentMaxCo2 , currentMaxPir = getMax()
+            print(currentMaxCo2)
+            print(currentMaxPir)
 
         if haveModel:
             print('Receiving CO2...')
             receivedData = queryServer()
+
             try:
                 receivedData = np.reshape(receivedData[0],(1,2))
-                print('UnNormalized Received Data: ', receivedData )
-                receivedData = normalize_mat(receivedData)
-                print('Normalized Received Data: ', receivedData )
+                receivedData[0,0] = np.true_divide(receivedData[0,0], currentMaxCo2)
+                receivedData[0,1] = np.true_divide(receivedData[0,1], currentMaxPir)
                 receivedData = np.reshape(receivedData, (receivedData.shape[0], 1, receivedData.shape[1])) #(receivedData.shape[0], 1, receivedData.shape[1])
                 print('Received Current Room Status')
                 print(receivedData)
@@ -158,6 +166,6 @@ if __name__ == "__main__":
                 f.close()
 
                 print('Waiting for New Data...')
-                #time.sleep(60*15) #Wait for 15 minutes for New Prediction
+                time.sleep(60*15) #Wait for 15 minutes for New Prediction
             except:
                 print('No New Data')           #print(newModel.predict(receivedData[0]))
