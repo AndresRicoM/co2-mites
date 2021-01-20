@@ -120,8 +120,6 @@ if __name__ == "__main__":
     currentMaxCo2 , currentMaxPir = getMax()
     print(currentMaxCo2)
     print(currentMaxPir)
-    test = requests.get('http://replace.media.mit.edu:8080/TermitesV2/getsinglesensorbydateid2020.php?sensorid=8360837&start=2020-9-20-0-0-0-0&end=2020-09-21-20-0-0&project=universal')
-    print(test.content)
 
     while True:
 
@@ -150,7 +148,6 @@ if __name__ == "__main__":
         if haveModel:
             print('Receiving CO2...')
             receivedData = queryServer()
-            print('Received Data!  ', receivedData)
 
             try:
                 receivedData = np.reshape(receivedData[0],(1,2))

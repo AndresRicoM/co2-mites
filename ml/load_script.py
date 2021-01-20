@@ -28,6 +28,8 @@ def queryTermiteServer(start, end, id, desiredVariables):
 
     try:
         arr = requests.get(url).json()
+        #arr = requests.get(url)
+        #print('this is the received array.    ', arr)
     except:
         print('Could Not Connect To terMITe Server! =( ')
 
@@ -54,7 +56,7 @@ def queryTermiteServer(start, end, id, desiredVariables):
         output_data = np.vstack((output_data, holdingVector))
 
     output_data = np.delete(output_data, 0, axis = 0)
-
+    #print('Test Data!     ', output_data)
     return  np.transpose(output_data), termiteTimes #np.any(np.isnan(output_data)), np.all(np.isfinite(output_data))
  #np.transpose(output_data)
 
