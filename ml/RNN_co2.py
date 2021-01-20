@@ -65,8 +65,8 @@ def runRNN(sensorId, start, end, desiredValues, numberofclusters):
     model.add(Dropout(0.2))
 
     #Feeds LSTM results into Dense layers for classification.
-    #model.add(Dense(500, activation='relu'))
-    #model.add(Dropout(0.2))
+    model.add(Dense(500, activation='relu'))
+    model.add(Dropout(0.2))
 
     model.add(Dense(500, activation='relu'))
     model.add(Dropout(0.2))
