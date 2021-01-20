@@ -1,4 +1,3 @@
-
 # -*- coding: UTF-8 -*-
 #
 #    ██████╗ ██████╗ ██████╗       ███╗   ███╗██╗████████╗███████╗███████╗
@@ -147,6 +146,7 @@ if __name__ == "__main__":
         if haveModel:
             print('Receiving CO2...')
             receivedData = queryServer()
+            print('Received Data!  ', receivedData)
 
             try:
                 receivedData = np.reshape(receivedData[0],(1,2))
