@@ -31,6 +31,7 @@ import numpy as np
 from sklearn.preprocessing import StandardScaler
 from load_script import*
 from load_data import*
+import requests
 
 #Fix epochs in RNN / Fix daysForModel
 minimumAcceptedAccuracy = .2
@@ -46,6 +47,7 @@ def queryServer():
     startString = s.strftime('%Y'+'-'+'%m'+'-'+'%d'+'-'+'%H'+'-'+'%M'+'-'+'%S')
     des = ['eCO2', 'pir']
     newSensorData, newSensorTimes  = queryTermiteServer(startString, endString, sensorId, des)
+    print(newSensorData)
     return newSensorData
 
 def getNewModel():
@@ -118,6 +120,8 @@ if __name__ == "__main__":
     currentMaxCo2 , currentMaxPir = getMax()
     print(currentMaxCo2)
     print(currentMaxPir)
+    test = requests.get('http://replace.media.mit.edu:8080/TermitesV2/getsinglesensorbydateid2020.php?sensorid=8360837&start=2020-9-20-0-0-0-0&end=2020-09-21-20-0-0&project=universal')
+    print(test.content)
 
     while True:
 
