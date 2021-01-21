@@ -1,4 +1,3 @@
-
 # -*- coding: UTF-8 -*-
 #
 #    ██████╗ ██████╗ ██████╗       ███╗   ███╗██╗████████╗███████╗███████╗
@@ -32,12 +31,13 @@ import numpy as np
 from sklearn.preprocessing import StandardScaler
 from load_script import*
 from load_data import*
+import requests
 
 #Fix epochs in RNN / Fix daysForModel
-minimumAcceptedAccuracy = .001
+minimumAcceptedAccuracy = .2
 cluster_num = 4 #Indicate number of clusters that Spectral will use. Clusters become the categories for classification from the RNN.
 daysForModel = 7 #Days - Variable sets days that have to go by for new model to be generated.
-timeUpadateModel = 5 #Days - Variable sets the amount of days that are taken into account for a new model.
+timeUpadateModel = 3 #Days - Variable sets the amount of days that are taken into account for a new model.
 
 def queryServer():
     sensorId = "8360568"
@@ -47,6 +47,7 @@ def queryServer():
     startString = s.strftime('%Y'+'-'+'%m'+'-'+'%d'+'-'+'%H'+'-'+'%M'+'-'+'%S')
     des = ['eCO2', 'pir']
     newSensorData, newSensorTimes  = queryTermiteServer(startString, endString, sensorId, des)
+    print(newSensorData)
     return newSensorData
 
 def getNewModel():
@@ -147,6 +148,7 @@ if __name__ == "__main__":
         if haveModel:
             print('Receiving CO2...')
             receivedData = queryServer()
+            print(receivedData)
 
             try:
                 receivedData = np.reshape(receivedData[0],(1,2))
