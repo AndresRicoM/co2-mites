@@ -105,6 +105,9 @@ if __name__ == "__main__":
     print(os.path.abspath(os.curdir))
     print(welcome_message);
     print('Initializing Training...')
+    print('1st server access')
+    print(queryServer())
+    print('2nd server access')
     newModel = getNewModel()
     current_file_name = str(datetime.datetime.now())
     f = open('current_model_info/current_accuracy.txt')
@@ -147,7 +150,6 @@ if __name__ == "__main__":
 
         if haveModel:
             print('Receiving CO2...')
-            receivedData = queryServer()
 
             try:
                 receivedData = np.reshape(receivedData[0],(1,2))
