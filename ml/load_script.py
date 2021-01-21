@@ -27,8 +27,8 @@ def queryTermiteServer(start, end, id, desiredVariables):
     url = "http://replace.media.mit.edu:8080/TermitesV2/getsinglesensorbydateid2020.php?sensorid="+id+"&start="+start+"-0-0-0-0&end="+end+"-0&project=universal"
 
     try:
-        arr = requests.get(url).json()
-        #arr = requests.get(url)
+        arr = requests.get(url)
+        arr = requests.json
         #print('this is the received array.    ', arr)
     except:
         print('Could Not Connect To terMITe Server! =( ')
