@@ -28,7 +28,7 @@ def queryTermiteServer(start, end, id, desiredVariables):
 
     try:
         arr = requests.get(url)
-        arr = requests.json
+        arr = arr.json
         #print('this is the received array.    ', arr)
     except:
         print('Could Not Connect To terMITe Server! =( ')
