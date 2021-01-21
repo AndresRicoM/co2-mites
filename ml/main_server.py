@@ -46,7 +46,7 @@ def queryServer():
     s = e - datetime.timedelta(minutes=5)
     startString = s.strftime('%Y'+'-'+'%m'+'-'+'%d'+'-'+'%H'+'-'+'%M'+'-'+'%S')
     des = ['eCO2', 'pir']
-    newSensorData, newSensorTimes  = queryTermiteServer(startString, endString, sensorId, des)
+    newSensorData, newSensorTimes  = loopqueryTermiteServer(startString, endString, sensorId, des)
     print(newSensorData)
     return newSensorData
 
