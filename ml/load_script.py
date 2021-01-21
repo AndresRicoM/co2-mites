@@ -28,12 +28,12 @@ def queryTermiteServer(start, end, id, desiredVariables):
 
     try:
         arr = requests.get(url)
-        arr = arr.json
+        second = arr.json()
         #print('this is the received array.    ', arr)
     except:
         print('Could Not Connect To terMITe Server! =( ')
 
-    termiteData = arr[0]
+    termiteData = second[0]
 
     termiteName = termiteData['name']
     termiteValues = termiteData['values']
