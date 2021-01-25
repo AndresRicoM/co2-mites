@@ -32,6 +32,7 @@ import numpy as np
 from sklearn.preprocessing import StandardScaler
 from load_script import*
 from load_data import*
+from send_server import*
 
 #Fix epochs in RNN / Fix daysForModel
 minimumAcceptedAccuracy = .001

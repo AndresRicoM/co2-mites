@@ -1,16 +1,17 @@
 import psycopg2
-from config import config
+import datetime
 
 def send2server(data2send):
-    try:
-       connection = psycopg2.connect(user="postgres",
-                                      password="",
-                                      host="127.0.0.1",
+    connection = psycopg2.connect(user="blindtermite",
+                                      password = "BlindAsAB@t",
+                                      host="localhost",
                                       port="5444",
                                       database="termites")
+
+    try:
        cursor = connection.cursor()
 
-       postgres_insert_query = """ NEW Data """
+       postgres_insert_query = """ INSERT INTO termiteclusters (ID, time, inserttime, co2, cluster, pir, confidence, chipid) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"""
        cursor.execute(postgres_insert_query, data2send)
 
        connection.commit()
@@ -19,7 +20,7 @@ def send2server(data2send):
 
     except (Exception, psycopg2.Error) as error :
         if(connection):
-            print("Failed to insert record into mobile table", error)
+            print("Failed to insert record into termiteclusters table", error)
 
     finally:
         #closing database connection.
@@ -27,3 +28,6 @@ def send2server(data2send):
             cursor.close()
             connection.close()
             print("PostgreSQL connection is closed")
+
+#thetime = datetime.datetime.now()
+#send2server((1, None , thetime , 400, 3, 12, 0.5, 867577))
