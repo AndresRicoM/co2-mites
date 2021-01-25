@@ -39,6 +39,7 @@ minimumAcceptedAccuracy = .001
 cluster_num = 4 #Indicate number of clusters that Spectral will use. Clusters become the categories for classification from the RNN.
 daysForModel = 7 #Days - Variable sets days that have to go by for new model to be generated.
 timeUpadateModel = 5 #Days - Variable sets the amount of days that are taken into account for a new model.
+sensID = 8360568
 
 def queryServer():
     sensorId = "8360568"
@@ -150,7 +151,16 @@ if __name__ == "__main__":
             receivedData = queryServer()
 
             try:
+                serverPacket = ()
+                serverPacket = serverPacket + (1,)
+                serverPacket = serverPacket + (None,)
+                serverPacket = serverPacket + (datetime.datetime.now(),)
+
                 receivedData = np.reshape(receivedData[0],(1,2))
+
+                serverPacket = serverPacket + (receivedData[0,0],)
+                serverPacket = serverPacket + (receivedData[0,1],)
+
                 receivedData[0,0] = np.true_divide(receivedData[0,0], currentMaxCo2)
                 receivedData[0,1] = np.true_divide(receivedData[0,1], currentMaxPir)
                 receivedData = np.reshape(receivedData, (receivedData.shape[0], 1, receivedData.shape[1])) #(receivedData.shape[0], 1, receivedData.shape[1])
@@ -159,6 +169,14 @@ if __name__ == "__main__":
                 print('Making Desicion...')
                 predictionVect = newModel.predict(receivedData)
                 print(predictionVect)
+
+                identifiedCluster = np.argmax(predictionVect)
+                serverPacket = serverPacket + (identifiedCluster,)
+                serverPacket = serverPacket + (predicitionVect[identifiedCluster],)
+
+                serverPacket = serverPacket + (sensID,)
+
+
                 f = open('trained_models/predictions/' + current_file_name + '_predictions.txt', 'a')
                 f.write(str(predictionVect) + "\n")
                 f.close()
@@ -166,7 +184,12 @@ if __name__ == "__main__":
                 f.write(str(receivedData) + "\n")
                 f.close()
 
+                print('Uploading Data into Cluster Database: ', serverPacket)
+                send2server(serverPacket)
+
                 print('Waiting for New Data...')
                 time.sleep(60*15) #Wait for 15 minutes for New Prediction
+
+
             except:
                 print('No New Data')           #print(newModel.predict(receivedData[0]))
