@@ -11,7 +11,7 @@ def send2server(data2send):
     try:
        cursor = connection.cursor()
 
-       postgres_insert_query = """ INSERT INTO termiteclusters (ID, time, inserttime, co2,  pir, cluster, confidence, chipid) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"""
+       postgres_insert_query = """ INSERT INTO termiteclusters (inserttime, co2,  pir, cluster, confidence, chipid) VALUES (%s,%s,%s,%s,%s,%s)"""
        cursor.execute(postgres_insert_query, data2send)
 
        connection.commit()
