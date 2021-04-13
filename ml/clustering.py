@@ -60,7 +60,7 @@ def clusteredData(clusterNum, start, end, sensorID, desiredDimensions, same_sens
         print('SPECTRAL CLUSTERING')
         clustering = SpectralClustering(n_clusters=clusterNum, assign_labels="discretize",random_state=0).fit(unclusteredMatrix)
         y_kmeans = clustering.labels_
-        file_name = str(datetime.datetime.now()) + '.txt'
+        file_name = str(sensorID) + '/' + str(datetime.datetime.now()) + '.txt'
         np.savetxt('trained_models/cluster_models/' + file_name,np.hstack((unclusteredMatrix, np.reshape(y_kmeans,(y_kmeans.shape[0], 1)))),delimiter=",")
         print('New Clustered Data has been saved!')
         #centers = clustering.cluster_centers_
