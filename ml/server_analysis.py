@@ -35,11 +35,11 @@ connection = psycopg2.connect(user="blindtermite",
 
 try:
    cursor = connection.cursor()
-   cursor.execute("SELECT inserttime, co2, pir, cluster, confidence, chipid FROM termiteclusters WHERE chipid = 8360978 AND inserttime <= '2021-05-17 10:34:11.903760'") # ORDER BY chipid
+   cursor.execute("SELECT inserttime, co2, pir, cluster, confidence, chipid FROM termiteclusters WHERE chipid = 8360978 AND inserttime > '2021-05-17 10:34:11.903760'") # ORDER BY chipid
    rows = cursor.fetchall()
    print('Number of rows: ', cursor.rowcount)
 
-   with open("test.txt", "w", newline='') as f:
+   with open("trained_models/ml_classifications/8360978/2021-05-24.txt", "w", newline='') as f:
         for row in rows:
             print(row, file=f)
 
