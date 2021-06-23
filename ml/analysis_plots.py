@@ -5,9 +5,6 @@ import seaborn as sns; sns.set()  # for plot styling
 from matplotlib import gridspec
 import os
 
-test_file_name = 'd3_maitane_fitness_160621.txt'
-test_data_path = '/Users/AndresRico/Desktop/working/unilogger/test_data/'
-
 sensorIds = ['8360978', '8361330', '8366124', '8362833', '8361377']
 
 for id in sensorIds:

@@ -35,7 +35,7 @@ connection = psycopg2.connect(user="blindtermite",
 
 try:
    cursor = connection.cursor()
-   cursor.execute("SELECT inserttime, co2, pir, cluster, chipid FROM termiteclusters WHERE chipid = 8360978 AND inserttime <= '2021-05-17 10:34:11.903760'") # ORDER BY chipid
+   cursor.execute("SELECT inserttime, co2, pir, cluster, confidence, chipid FROM termiteclusters WHERE chipid = 8360978 AND inserttime <= '2021-05-17 10:34:11.903760'") # ORDER BY chipid
    rows = cursor.fetchall()
    print('Number of rows: ', cursor.rowcount)
 
@@ -44,12 +44,6 @@ try:
             print(row, file=f)
 
    cursor.close()
-   #postgres_insert_query = """ INSERT INTO termxiteclusters (inserttime, co2,  pir, cluster, confidence, chipid) VALUES (%s,%s,%s,%s,%s,%s)"""
-   #cursor.execute(postgres_insert_query, data2send)
-
-   #connection.commit()
-   #count = cursor.rowcount
-   #print (count, "Record inserted successfully into mobile table")
 
 except (Exception, psycopg2.Error) as error :
     if(connection):
