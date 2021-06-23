@@ -35,7 +35,7 @@ connection = psycopg2.connect(user="blindtermite",
 
 try:
    cursor = connection.cursor()
-   cursor.excecute("SELECT chipid, cluster FROM termiteclusters") # ORDER BY chipid
+   cursor.execute("SELECT chipid, cluster FROM termiteclusters") # ORDER BY chipid
    rows = cursor.fetchall()
    print('Number of rows: ', cursor.rowcount)
    cur.close()
