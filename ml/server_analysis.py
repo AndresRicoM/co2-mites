@@ -41,7 +41,7 @@ try:
 
    with open("test.txt", "w", newline='') as f:
         for row in rows:
-            print(row[0], file=f)
+            print(row, file=f)
 
    cursor.close()
    #postgres_insert_query = """ INSERT INTO termxiteclusters (inserttime, co2,  pir, cluster, confidence, chipid) VALUES (%s,%s,%s,%s,%s,%s)"""
