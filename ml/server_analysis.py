@@ -40,7 +40,7 @@ try:
    print('Number of rows: ', cursor.rowcount)
 
    with open("test.txt", "w", newline='') as f:
-        for row in cur:
+        for row in rows:
             print(row[0], file=f)
 
    cursor.close()
