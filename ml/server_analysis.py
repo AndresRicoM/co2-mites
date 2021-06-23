@@ -35,7 +35,10 @@ connection = psycopg2.connect(user="blindtermite",
 
 try:
    cursor = connection.cursor()
-
+   cursor.excecute("SELECT chipid, cluster FROM termiteclusters") # ORDER BY chipid
+   rows = cursor.fetchall()
+   print('Number of rows: ', cursor.rowcount)
+   cur.close()
    #postgres_insert_query = """ INSERT INTO termxiteclusters (inserttime, co2,  pir, cluster, confidence, chipid) VALUES (%s,%s,%s,%s,%s,%s)"""
    #cursor.execute(postgres_insert_query, data2send)
 
