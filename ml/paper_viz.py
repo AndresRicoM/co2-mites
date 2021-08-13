@@ -10,8 +10,8 @@ from sklearn.cluster import KMeans
 from matplotlib import rc,rcParams
 
 
-id = '8360978'
-directory = 'trained_models/cluster_models/' + id + '/2021-05-17 10:34:11.903760.txt'
+id = '8360568'#'8360978' #8360568
+directory = 'trained_models/cluster_models/' + id + '/2021-04-26 13:36:51.109107.txt'
 #plt.style.use('dark_background') #Dark Style for Plot
 dot_size = 10
 # activate latex text rendering
