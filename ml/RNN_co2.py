@@ -21,6 +21,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from load_data import *
 from clustering import *
+import random
 #from tensorflow.contrib.rnn import *
 
 """sensorId = "8360568"
@@ -105,6 +106,11 @@ def runRNN(sensorId, start, end, desiredValues, numberofclusters):
     plt.figure(1)
     plt.plot(history.history['acc'], '-') #Plot Accuracy Curve - OSX (accuracy) - linux(acc)
     plt.plot(history.history['val_acc'], ':')
+    number = str(random.random())
+    file_name = str(sensorId) + '/train' + '/' + number + '.txt'
+    np.savetxt('trained_models/cluster_models/' + file_name, history.history['acc'])
+    file_name = str(sensorId) + '/test' + '/' + number + '.txt'
+    np.savetxt('trained_models/cluster_models/' + file_name, history.history['val_acc'])
     plt.title('RNN Model Accuracy')
     plt.ylabel('Accuracy')
     plt.xlabel('Epoch')

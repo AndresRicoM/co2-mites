@@ -58,7 +58,7 @@ if __name__ == "__main__":
     print('Initializing Training...')
 
     counter = 0
-    for dates in date_list:
+    for i in range(0,8):
         counter =+ counter
 
         sensorId = "8360978"

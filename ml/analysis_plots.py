@@ -5,12 +5,12 @@ import seaborn as sns; sns.set()  # for plot styling
 from matplotlib import gridspec
 import os
 
-sensorIds = ['8360568', '8360978', '8361330', '8366124', '8362833', '8361377']
+sensorIds = ['8360978']   #['8360568', '8360978', '8361330', '8366124', '8362833', '8361377']
 
 for id in sensorIds:
 
     file_number = 0
-    directory = 'trained_models/cluster_models/' + id + '/'
+    directory = 'trained_models/cluster_models/' + id + '/paper' + '/'
 
     for filename in os.listdir(directory): #Count number of files
         f = os.path.join(directory, filename)
