@@ -60,6 +60,7 @@ if __name__ == "__main__":
     counter = 0
     for i in range(0,8):
         counter =+ counter
+        print(counter)
 
         sensorId = "8360978"
         e = date + (counter * change)
