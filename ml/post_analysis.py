@@ -63,8 +63,10 @@ if __name__ == "__main__":
 
         sensorId = "8360978"
         e = date + (counter * change)
+        print(e)
         endString = e.strftime('%Y'+'-'+'%m'+'-'+'%d'+'-'+'%H'+'-'+'%M'+'-'+'%S')
         s = e - change
+        print(s)
         startString = s.strftime('%Y'+'-'+'%m'+'-'+'%d'+'-'+'%H'+'-'+'%M'+'-'+'%S')
         des = ['eCO2', 'pir']
         runRNN(sensorId, startString, endString, des, cluster_num)
