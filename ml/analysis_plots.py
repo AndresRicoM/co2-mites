@@ -18,7 +18,7 @@ for id in sensorIds:
             file_number = file_number + 1
 
     #print(file_number)
-    plt.style.use('dark_background') #Dark Style for Plot
+    #plt.style.use('dark_background') #Dark Style for Plot
     dot_size = 5
     plot_title = "Sensor ID #" + id + ' Andorra Deployment'
 
@@ -30,7 +30,7 @@ for id in sensorIds:
     for filename in os.listdir(directory):
         f = os.path.join(directory, filename)
         if filename != '.DS_Store':
-            plot_title = 'Week of: ' + filename[0:11]
+            plot_title = 'Week: ' + filename[0:11]
             input_data = np.genfromtxt(f, delimiter = ',', invalid_raise=False)
             print(input_data.shape[0])
             time_vector = np.arange(input_data.shape[0])
