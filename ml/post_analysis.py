@@ -16,7 +16,7 @@ daysForModel = 7 #Days - Variable sets days that have to go by for new model to 
 timeUpadateModel = 3 #Days - Variable sets the amount of days that are taken into account for a new model.
 sensID = 8360568
 
-date = datetime.datetime(2021,5,10)
+date = datetime.datetime(2021,2,1)
 change = datetime.timedelta(days=7)
 date_list = [date, date + change, date + (2*change)]#2021-05-
 
