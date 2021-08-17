@@ -27,28 +27,30 @@ for id in sensorIds:
     fig.suptitle(plot_title, size=20)
     fixed_files = file_number
     file_number = 0
+    counter = 0
     for filename in os.listdir(directory):
+        counter = counter + 1
         f = os.path.join(directory, filename)
         if filename != '.DS_Store':
-            plot_title = 'Week: ' + filename[0:11]
+            plot_title = 'Week: ' + str(counter)
             input_data = np.genfromtxt(f, delimiter = ',', invalid_raise=False)
             print(input_data.shape[0])
             time_vector = np.arange(input_data.shape[0])
             print(time_vector.shape[0])
 
             ax = fig.add_subplot(gs[file_number])
-            ax.scatter(time_vector, input_data[:,0], c=input_data[:,2], cmap='viridis', s = dot_size) #Scatter CO2
+            ax.scatter(time_vector, input_data[:,0], c=input_data[:,2], cmap='rainbow', s = dot_size) #Scatter CO2
             ax.set_ylabel(r'CO2')
             ax.set_xlabel(r'Time')
             ax.set_title(plot_title)
 
             ax = fig.add_subplot(gs[file_number + fixed_files])
-            ax.scatter(time_vector, input_data[:,1], c=input_data[:,2], cmap='viridis', s = dot_size) #Scatter CO2
+            ax.scatter(time_vector, input_data[:,1], c=input_data[:,2], cmap='rainbow', s = dot_size) #Scatter CO2
             ax.set_ylabel(r'PIR')
             ax.set_xlabel(r'Time')
 
             ax = fig.add_subplot(gs[file_number + (2*fixed_files)])
-            ax.scatter(input_data[:,0], input_data[:,1], c=input_data[:,2], cmap='viridis', s = dot_size) #Scatter CO2
+            ax.scatter(input_data[:,0], input_data[:,1], c=input_data[:,2], cmap='rainbow', s = dot_size) #Scatter CO2
             ax.set_ylabel(r'PIR')
             ax.set_xlabel(r'CO2')
 
