@@ -17,7 +17,7 @@ timeUpadateModel = 3 #Days - Variable sets the amount of days that are taken int
 sensID = 8360568
 
 date = datetime.datetime(2021,1,11)
-change = datetime.timedelta(days=30)
+change = datetime.timedelta(days=7)
 date_list = [date, date + change, date + (2*change)]#2021-05-
 
 def queryServer():
@@ -58,7 +58,7 @@ if __name__ == "__main__":
     print('Initializing Training...')
 
     counter = 0
-    for i in range(0,4):
+    for i in range(0,10):
         counter = counter + 1
         print(counter)
 
