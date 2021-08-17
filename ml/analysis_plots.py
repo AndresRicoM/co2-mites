@@ -5,7 +5,7 @@ import seaborn as sns; sns.set()  # for plot styling
 from matplotlib import gridspec
 import os
 
-sensorIds = ['8360568']   #['8360568', '8360978', '8361330', '8366124', '8362833', '8361377']
+sensorIds = ['8360978']   #['8360568', '8360978', '8361330', '8366124', '8362833', '8361377']
 
 for id in sensorIds:
 

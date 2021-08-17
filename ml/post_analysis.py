@@ -14,14 +14,14 @@ minimumAcceptedAccuracy = .6
 cluster_num = 5 #Indicate number of clusters that Spectral will use. Clusters become the categories for classification from the RNN.
 daysForModel = 7 #Days - Variable sets days that have to go by for new model to be generated.
 timeUpadateModel = 3 #Days - Variable sets the amount of days that are taken into account for a new model.
-sensID = 8360568
+sensID = 8360978
 
-date = datetime.datetime(2021,1,11)
+date = datetime.datetime(2021,5,3) #11 Enero 2021 10 semanas.
 change = datetime.timedelta(days=7)
 date_list = [date, date + change, date + (2*change)]#2021-05-
 
 def queryServer():
-    sensorId = "8360568"
+    sensorId = "8360978"
     e = datetime.datetime.now()
     endString = e.strftime('%Y'+'-'+'%m'+'-'+'%d'+'-'+'%H'+'-'+'%M'+'-'+'%S')
     s = e - datetime.timedelta(minutes=5)
@@ -32,7 +32,7 @@ def queryServer():
 
 def getNewModel():
     #cluster_num = 4
-    sensorId = "8360568"
+    sensorId = "8360978"
     e = datetime.datetime.now()
     endString = e.strftime('%Y'+'-'+'%m'+'-'+'%d'+'-'+'%H'+'-'+'%M'+'-'+'%S')
     s = e - datetime.timedelta(days=daysForModel)
@@ -41,7 +41,7 @@ def getNewModel():
     return runRNN(sensorId, startString, endString, des, cluster_num)
 
 def getMax():
-    sensorId = "8360568"
+    sensorId = "8360978"
     e = datetime.datetime.now()
     endString = e.strftime('%Y'+'-'+'%m'+'-'+'%d'+'-'+'%H'+'-'+'%M'+'-'+'%S')
     s = e - datetime.timedelta(days=daysForModel)
@@ -62,7 +62,7 @@ if __name__ == "__main__":
         counter = counter + 1
         print(counter)
 
-        sensorId = "8360568"
+        sensorId = "8360978"
         e = date + (counter * change)
         print(e)
         endString = e.strftime('%Y'+'-'+'%m'+'-'+'%d'+'-'+'%H'+'-'+'%M'+'-'+'%S')
