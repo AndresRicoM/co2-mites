@@ -17,7 +17,7 @@ timeUpadateModel = 3 #Days - Variable sets the amount of days that are taken int
 sensID = 8360568
 
 date = datetime.datetime(2021,3,29)
-change = datetime.timedelta(days=7)
+change = datetime.timedelta(days=30)
 date_list = [date, date + change, date + (2*change)]#2021-05-
 
 def queryServer():
