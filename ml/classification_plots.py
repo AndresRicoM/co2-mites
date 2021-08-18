@@ -5,7 +5,7 @@ import seaborn as sns; sns.set()  # for plot styling
 from matplotlib import gridspec
 import os
 
-sensorIds = ['8360978', '8361330', '8366124', '8362833', '8361377']
+sensorIds = ['8360978']#, '8361330', '8366124', '8362833', '8361377']
 
 for id in sensorIds:
 
@@ -19,7 +19,7 @@ for id in sensorIds:
 
     #print(file_number)
     plt.style.use('dark_background') #Dark Style for Plot
-    dot_size = 5
+    dot_size = 10
     plot_title = "Sensor ID #" + id + ' Andorra Deployment'
 
     gs = gridspec.GridSpec(3, file_number)
@@ -37,18 +37,18 @@ for id in sensorIds:
             print(time_vector.shape[0])
 
             ax = fig.add_subplot(gs[file_number])
-            ax.scatter(time_vector, input_data[:,7], c=input_data[:,9], cmap='viridis', s = dot_size) #Scatter CO2
+            ax.scatter(time_vector, input_data[:,7], c=input_data[:,9], cmap='rainbow', s = dot_size) #Scatter CO2
             ax.set_ylabel(r'CO2')
             ax.set_xlabel(r'Time')
             ax.set_title(plot_title)
 
             ax = fig.add_subplot(gs[file_number + fixed_files])
-            ax.scatter(time_vector, input_data[:,8], c=input_data[:,9], cmap='viridis', s = dot_size) #Scatter CO2
+            ax.scatter(time_vector, input_data[:,8], c=input_data[:,9], cmap='rainbow', s = dot_size) #Scatter CO2
             ax.set_ylabel(r'PIR')
             ax.set_xlabel(r'Time')
 
             ax = fig.add_subplot(gs[file_number + (2*fixed_files)])
-            ax.scatter(input_data[:,7], input_data[:,8], c=input_data[:,9], cmap='viridis', s = dot_size) #Scatter CO2
+            ax.scatter(input_data[:,7], input_data[:,8], c=input_data[:,9], cmap='rainbow', s = dot_size) #Scatter CO2
             ax.set_ylabel(r'PIR')
             ax.set_xlabel(r'CO2')
 

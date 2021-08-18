@@ -20,34 +20,34 @@ for id in sensorIds:
     #print(file_number)
     #plt.style.use('dark_background') #Dark Style for Plot
     dot_size = 5
-    plot_title = "Sensor ID #" + id + ' Andorra Deployment'
+    plot_title = "Classroom Sensor Deployment"
 
     gs = gridspec.GridSpec(3, file_number)
     fig = plt.figure()
-    fig.suptitle(plot_title, size=20)
+    fig.suptitle(plot_title, size=20, weight="bold")
     fixed_files = file_number
     file_number = 0
     counter = 0
     for filename in os.listdir(directory):
-        counter = counter + 1
         f = os.path.join(directory, filename)
         if filename != '.DS_Store':
+            counter = counter + 1
             plot_title = 'Week: ' + str(counter)
             input_data = np.genfromtxt(f, delimiter = ',', invalid_raise=False)
             print(input_data.shape[0])
             time_vector = np.arange(input_data.shape[0])
-            print(time_vector.shape[0])
+            time_vector = (time_vector * 5) / 1440
 
             ax = fig.add_subplot(gs[file_number])
             ax.scatter(time_vector, input_data[:,0], c=input_data[:,2], cmap='rainbow', s = dot_size) #Scatter CO2
             ax.set_ylabel(r'CO2')
-            ax.set_xlabel(r'Time')
-            ax.set_title(plot_title)
+            ax.set_xlabel(r'Time (Days)')
+            ax.set_title(plot_title , weight="bold")
 
             ax = fig.add_subplot(gs[file_number + fixed_files])
             ax.scatter(time_vector, input_data[:,1], c=input_data[:,2], cmap='rainbow', s = dot_size) #Scatter CO2
             ax.set_ylabel(r'PIR')
-            ax.set_xlabel(r'Time')
+            ax.set_xlabel(r'Time (Days)')
 
             ax = fig.add_subplot(gs[file_number + (2*fixed_files)])
             ax.scatter(input_data[:,0], input_data[:,1], c=input_data[:,2], cmap='rainbow', s = dot_size) #Scatter CO2
