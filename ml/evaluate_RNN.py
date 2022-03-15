@@ -72,7 +72,7 @@ model.add(Dropout(0.2))
 model.add(Dense(500, activation='relu'))
 model.add(Dropout(0.2))
 
-model.add(Dense(numberofclusters, activation='softmax')) #Only One output Unit
+model.add(Dense(3, activation='softmax')) #Only One output Unit
 
 #Declare optimizing fucntion and parameters.
 opt = tf.keras.optimizers.Adam(lr=0.001, decay=1e-6)
