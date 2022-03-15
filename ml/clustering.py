@@ -3,7 +3,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 import seaborn as sns; sns.set()  # for plot styling
 import numpy as np
-from sklearn.datasets.samples_generator import make_blobs
+from sklearn.datasets import make_blobs
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_samples
 from sklearn.cluster import SpectralClustering

@@ -167,11 +167,11 @@ if __name__ == "__main__":
                 print('Making Desicion...')
                 predictionVect = newModel.predict(receivedData)
                 print(predictionVect)
-                
+
                 print('Building new packet')
                 identifiedCluster = np.argmax(predictionVect)
                 serverPacket = serverPacket + (int(identifiedCluster),)
-                serverPacket = serverPacket + (float(np.amax(predictionVect)),) #Fix for conficence value. 
+                serverPacket = serverPacket + (float(np.amax(predictionVect)),) #Fix for conficence value.
                 serverPacket = serverPacket + (int(sensID),)
 
 

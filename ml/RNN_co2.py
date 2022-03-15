@@ -40,7 +40,7 @@ def runRNN(sensorId, start, end, desiredValues, numberofclusters):
 
     #[initial_X, initial_Y] = shuffle_vect(initial_X, initial_Y)
 
-    (x_train, y_train, x_test, y_test) = split_xy(initial_X, initial_Y, .7, 0)
+    (x_train, y_train, x_test, y_test, x_val, y_val) = split_xy(initial_X, initial_Y, .7, 0)
 
     #Reshapes X matrix to be able to feed in to LSTM.
     x_train = np.reshape(x_train, (x_train.shape[0], 1, x_train.shape[1]))
@@ -88,7 +88,7 @@ def runRNN(sensorId, start, end, desiredValues, numberofclusters):
     )
 
     #Fit model and store into history variable.
-    history = model.fit(x_train, y_train, epochs=50,  batch_size = 64, validation_data=(x_test, y_test))
+    history = model.fit(x_train, y_train, epochs=50,  batch_size = 64, validation_data=(x_val, y_val))
 
     print(history.history.keys()) #terminal outout of accuracy results.
 
