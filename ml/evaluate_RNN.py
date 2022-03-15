@@ -21,7 +21,7 @@ cluster_num = 3"""
 
 
 #def clusteredData(clusterNum, start, end, sensorID, desiredDimensions, same_sensor, sensor2ID, desiredDimensions2, chosenAlgorithm)
-path = 'Chameleon_Data/Office_Sensor/co2-pir-clusters/week_1.txt'
+path = 'Chameleon_Data/School_Sensor/co2-pir-clusters/week_4.txt'
 
 collected_data = np.loadtxt(path, delimiter=",", dtype=str)
 print(collected_data.shape)
