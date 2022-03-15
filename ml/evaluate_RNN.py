@@ -23,12 +23,11 @@ cluster_num = 3"""
 #def clusteredData(clusterNum, start, end, sensorID, desiredDimensions, same_sensor, sensor2ID, desiredDimensions2, chosenAlgorithm)
 path = 'Chameleon_Data/Office_Sensor/co2-pir-clusters/week_1.txt'
 
-collected_data = np.genfromtxt(path, delimiter=",", dtype=str)
+collected_data = np.loadtxt(path, delimiter=",", dtype=str)
 print(collected_data.shape)
 
-initial_X = collected_data[:1,:]
-initial_Y = collected_data[2,:]
-
+initial_X = collected_data[:,:2]
+initial_Y = collected_data[:,2]
 print(initial_X.shape)
 print(initial_Y.shape)
 
@@ -39,11 +38,10 @@ x_train = np.reshape(x_train, (x_train.shape[0], 1, x_train.shape[1]))
 x_test = np.reshape(x_test, (x_test.shape[0], 1, x_test.shape[1]))
 #x_val = np.reshape(x_val, (x_val.shape[0], 1, x_val.shape[1]))
 print (x_train.shape)
-print (x_test.shape)
+#print (x_test.shape)
 #print (x_val.shape)
-
-print (x_train)
-print (x_test)
+#print (x_train)
+#print (x_test)
 #print (x_val)
 
 
@@ -51,7 +49,7 @@ print (x_test)
 y_train = np.reshape(y_train, (y_train.shape[0], 1))
 y_test = np.reshape(y_test, (y_test.shape[0], 1))
 #y_val = np.reshape(y_val, (y_val.shape[0], 1))
-#print (y_train.shape)
+print (y_train.shape)
 #print (y_test.shape)
 
 #Begin sequential model.
