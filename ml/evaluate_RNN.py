@@ -94,6 +94,9 @@ test_loss, test_acc = model.evaluate(x_test, y_test) #Evaluate model with test s
 
 print('Test accuracy:', test_acc) #Terminal print of final accuracy of model.
 
+print('Test: :', history.history['acc'])
+print('Validation : ', history.history['val_acc'])
+
 f = open('current_model_info/current_accuracy.txt', 'w')
 f.write(str(test_acc))
 f.close()
