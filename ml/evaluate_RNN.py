@@ -31,13 +31,13 @@ initial_Y = collected_data[:,2]
 print(initial_X.shape)
 print(initial_Y.shape)
 
-(x_train, y_train, x_test, y_test) = split_xy(initial_X, initial_Y, .7, 0)
+(x_train, y_train, x_test, y_test, x_val, y_val) = split_xy(initial_X, initial_Y, .7, 0)
 
 #Reshapes X matrix to be able to feed in to LSTM.
 x_train = np.reshape(x_train, (x_train.shape[0], 1, x_train.shape[1]))
 x_test = np.reshape(x_test, (x_test.shape[0], 1, x_test.shape[1]))
-#x_val = np.reshape(x_val, (x_val.shape[0], 1, x_val.shape[1]))
-print (x_train.shape)
+x_val = np.reshape(x_val, (x_val.shape[0], 1, x_val.shape[1]))
+#print (x_train.shape)
 #print (x_test.shape)
 #print (x_val.shape)
 #print (x_train)
@@ -48,8 +48,8 @@ print (x_train.shape)
 #Reshapes target classes for feeding into network.
 y_train = np.reshape(y_train, (y_train.shape[0], 1))
 y_test = np.reshape(y_test, (y_test.shape[0], 1))
-#y_val = np.reshape(y_val, (y_val.shape[0], 1))
-print (y_train.shape)
+y_val = np.reshape(y_val, (y_val.shape[0], 1))
+#print (y_train.shape)
 #print (y_test.shape)
 
 #Begin sequential model.
@@ -78,7 +78,7 @@ model.add(Dense(5, activation='softmax')) #Only One output Unit
 #Declare optimizing fucntion and parameters.
 opt = tf.keras.optimizers.Adam(lr=0.001, decay=1e-6)
 
-#Compile model
+#Compile model a
 model.compile(
     loss='sparse_categorical_crossentropy',
     optimizer=opt,
@@ -86,7 +86,7 @@ model.compile(
 )
 
 #Fit model and store into history variable.
-history = model.fit(x_train, y_train, epochs=50,  batch_size = 64, validation_data=(x_test, y_test))
+history = model.fit(x_train, y_train, epochs=50,  batch_size = 64, validation_data=(x_val, y_val))
 
 print(history.history.keys()) #terminal outout of accuracy results.
 
