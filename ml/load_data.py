@@ -126,13 +126,13 @@ def split_xy(x_data, y_data, train_percentage, shuffle):
     dataRows = x_data.shape[0]
 
     split = round(dataRows * train_percentage)
-    validation = round(dataRows * .1)
+    #validation = round(dataRows * .1)
 
-    x_training = x_data[:split-validation][:]
-    y_training = y_data[:split-validation][:]
+    x_training = x_data[:split][:]
+    y_training = y_data[:split][:]
 
-    x_validation = x_data[split-validation+1:split][:]
-    y_validation = y_data[split-validation+1:split][:]
+    #x_validation = x_data[split-validation+1:split][:]
+    #y_validation = y_data[split-validation+1:split][:]
 
     x_test = x_data[split+1:][:]
     y_test = y_data[split+1:][:]
